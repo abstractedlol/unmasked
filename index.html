@@ -749,6 +749,105 @@
       .mv-header-top { flex-direction: column; align-items: flex-start; }
       .mv-meta-row { flex-direction: column; gap: 10px; }
     }
+
+
+    /* Mobile-first layout corrections */
+    .feature-tool-grid .api-art svg { width: 19px; height: 19px; }
+
+    @media (max-width: 760px) {
+      body { background-position: center top; }
+      .container { width: min(100% - 28px, 1160px); }
+      .nav { background: rgba(6,7,6,.94); backdrop-filter: blur(18px); border-bottom-color: var(--line); }
+      .nav-inner { min-height: 68px; height: auto; padding: 10px 0; gap: 10px; }
+      .brand { flex: 0 0 auto; }
+      .brand span:last-child { font-size: 17px; }
+      .nav-actions { margin-left: auto; gap: 7px; min-width: 0; }
+      .nav-actions > .btn[data-auth="login"], .nav-actions > .btn[data-auth="signup"] { display: none; }
+      .nav-user-btn { min-height: 40px; padding: 0 12px; max-width: 118px; }
+      .nav-user-btn span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+      .nav-actions > .btn[data-action="dashboard"] { min-height: 40px; padding: 0 13px; font-size: 0; white-space: nowrap; }
+      .nav-actions > .btn[data-action="dashboard"]::before { content: "Dashboard"; font-size: 13px; }
+      .nav-actions > .btn[data-action="dashboard"] svg { width: 15px; height: 15px; }
+
+      .hero { padding-top: 44px; }
+      .marquee-container { margin-top: 38px; }
+      .api-showcase-head { align-items: flex-start; flex-direction: column; gap: 8px; }
+      .api-showcase-head p { line-height: 1.6; }
+      .api-box-grid, .feature-tool-grid { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; }
+      .api-box { min-height: 132px; padding: 15px; }
+      .api-box strong { font-size: 13px; }
+      .api-box small { line-height: 1.45; }
+
+      .pricing-grid { grid-template-columns: 1fr; gap: 14px; margin-top: 32px; }
+      .price-card { padding: 23px; }
+      .plan-desc { min-height: 0; }
+      .popular { top: 14px; right: 14px; }
+
+      .checkout-modal { width: min(94vw, 560px); max-height: 90dvh; border-radius: 18px; }
+      .checkout-layout { grid-template-columns: 1fr; }
+      .order-panel { border-right: 0; border-bottom: 1px solid var(--line); padding: 22px; }
+      .payment-panel { padding: 22px; }
+      .payment-options { grid-template-columns: 1fr 1fr; }
+      .coin-grid { grid-template-columns: repeat(3, minmax(0,1fr)); }
+      .wallet-address { align-items: stretch; flex-direction: column; padding: 10px; }
+      .wallet-address code { white-space: normal; overflow-wrap: anywhere; line-height: 1.45; }
+      .wallet-address button { align-self: flex-end; }
+      .crypto-verify-top { align-items: flex-start; gap: 10px; }
+      .crypto-verify-top strong { text-align: right; flex: 0 0 auto; }
+
+      .dashboard-backdrop { overflow: auto; }
+      .test-dashboard { min-height: 100dvh; height: auto; display: block; }
+      .test-dashboard-top { position: sticky; top: 0; z-index: 6; min-height: 62px; padding: 8px 12px; }
+      .test-dashboard-top .brand span:last-child { display: none; }
+      .dashboard-top-actions { gap: 7px; }
+      .user-pill-btn { max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 7px 10px; }
+      .test-dashboard-body { display: block; }
+      .test-sidebar { position: static; max-height: none; overflow: visible; display: flex; gap: 8px; padding: 12px; border-right: 0; border-bottom: 1px solid var(--line); overflow-x: auto; scrollbar-width: none; }
+      .test-sidebar::-webkit-scrollbar { display: none; }
+      .dash-group { display: contents; }
+      .dash-group-title, .dash-subgroup { display: none; }
+      .tool-tab { flex: 0 0 auto; width: auto; min-height: 38px; margin: 0; padding: 0 12px; white-space: nowrap; border-color: var(--line); background: #0d100e; }
+      .tool-tab:hover { transform: none; }
+      .test-main { overflow: visible; padding: 22px 12px 44px; }
+      .test-main-head h2 { font-size: 30px; }
+      .tool-workspace { margin-top: 20px; border-radius: 14px; }
+      .dashboard-panel, .tool-form, .tool-preview { padding-left: 16px; padding-right: 16px; }
+      .overview-grid { grid-template-columns: 1fr 1fr; }
+      .overview-stat { padding: 16px; }
+      .overview-stat-value { font-size: 29px; }
+      .overview-hero { padding: 19px; }
+      .overview-orbit { width: 92px; height: 92px; }
+      .results-grid { grid-template-columns: 1fr; }
+      .result-prop { grid-template-columns: 95px minmax(0,1fr); }
+      .graph-canvas-container { height: 330px; }
+      .discord-actions, .mv-toolbar { flex-wrap: wrap; }
+      .mv-main-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 430px) {
+      .container { width: min(100% - 20px, 1160px); }
+      .brand-mark { width: 28px; height: 28px; }
+      .brand span:last-child { font-size: 15px; }
+      .nav-user-btn { max-width: 94px; padding: 0 9px; }
+      .nav-actions > .btn[data-action="dashboard"] { padding: 0 10px; }
+      h1 { font-size: clamp(42px, 13vw, 58px); }
+      .hero-copy { font-size: 14px; }
+      .api-box-grid, .feature-tool-grid { grid-template-columns: 1fr; }
+      .api-box { min-height: 118px; }
+      .pricing-grid { margin-top: 26px; }
+      .price { font-size: 36px; }
+      .modal-backdrop { padding: 10px; align-items: flex-start; overflow-y: auto; }
+      .checkout-modal { width: 100%; max-height: none; margin: 10px 0; }
+      .checkout-head { padding: 18px; }
+      .order-panel, .payment-panel { padding: 18px; }
+      .payment-options { grid-template-columns: 1fr; }
+      .coin-grid { grid-template-columns: repeat(3, 1fr); }
+      .overview-grid { grid-template-columns: 1fr; }
+      .overview-hero { align-items: flex-start; }
+      .search-command { display: grid; grid-template-columns: auto 1fr; }
+      .search-command .btn { grid-column: 1 / -1; width: 100%; }
+    }
+
   </style>
 </head>
 <body>
@@ -910,16 +1009,32 @@
           <article class="feature-card reveal reveal-delay-3"><div class="feature-index">03 PRESERVE</div><div class="feature-icon"><svg><use href="#i-layers"></use></svg></div><h3>Case-ready reports</h3><p>Keep notes, source links, and confidence markers together for cleaner handoffs.</p></article>
         </div>
         <div class="api-showcase reveal">
-          <div class="api-showcase-head"><div><div class="section-label">API network & features</div><h3 style="font-size:22px;margin:10px 0 0;letter-spacing:-.035em">76 connected engines. One workspace.</h3></div><p>903.8B records · 21T+ local database</p></div>
-          <div class="api-box-grid">
-            <article class="api-box"><div class="api-art">EO</div><div><strong>emailosint.org</strong><small>E-mail intelligence connector</small></div></article>
-            <article class="api-box"><div class="api-art">CC</div><div><strong>cord.cat</strong><small>Discord intelligence connector</small></div></article>
-            <article class="api-box"><div class="api-art">SK</div><div><strong>Seekira</strong><small>Federated discovery engine</small></div></article>
-            <article class="api-box"><div class="api-art">WN</div><div><strong>Wentyn</strong><small>Identity enrichment source</small></div></article>
-            <article class="api-box"><div class="api-art">DV</div><div><strong>DataVoid</strong><small>Large-scale record index</small></div></article>
-            <article class="api-box feature-box"><div class="api-art"><svg width="18" height="18"><use href="#i-search"></use></svg></div><div><strong>Federated Search</strong><small>Query multiple sources at once</small></div></article>
-            <article class="api-box feature-box"><div class="api-art"><svg width="18" height="18"><use href="#i-network"></use></svg></div><div><strong>Entity Graph</strong><small>Map relationships and linked signals</small></div></article>
-            <article class="api-box feature-box"><div class="api-art"><svg width="18" height="18"><use href="#i-layers"></use></svg></div><div><strong>Case Workspace</strong><small>Organize findings, sources, and exports</small></div></article>
+          <div class="api-showcase-head"><div><div class="section-label">Workspace features</div><h3 style="font-size:22px;margin:10px 0 0;letter-spacing:-.035em">Every investigation tool. One workspace.</h3></div><p>76 APIs · 903.8B records · 21T+ local database</p></div>
+          <div class="api-box-grid feature-tool-grid">
+            <article class="api-box feature-box"><div class="api-art"><svg><use href="#i-user"></use></svg></div><div><strong>Username Search</strong><small>Public signals connected to a username</small></div></article>
+            <article class="api-box feature-box"><div class="api-art"><svg><use href="#i-id-card"></use></svg></div><div><strong>Name Search</strong><small>Search records by person or organization name</small></div></article>
+            <article class="api-box feature-box"><div class="api-art"><svg><use href="#i-phone"></use></svg></div><div><strong>Phone Lookup</strong><small>Review public-source phone intelligence</small></div></article>
+            <article class="api-box feature-box"><div class="api-art"><svg><use href="#i-map-pin"></use></svg></div><div><strong>IP Lookup</strong><small>ASN, hosting and geolocation signals</small></div></article>
+            <article class="api-box feature-box"><div class="api-art"><svg><use href="#i-mail"></use></svg></div><div><strong>E-Mail Search</strong><small>Search supported sources by e-mail address</small></div></article>
+            <article class="api-box feature-box"><div class="api-art"><svg><use href="#i-key"></use></svg></div><div><strong>Password Exposure</strong><small>Check supported exposure indexes</small></div></article>
+            <article class="api-box feature-box"><div class="api-art"><svg><use href="#i-globe"></use></svg></div><div><strong>E-Mail FootPrint</strong><small>Map where an e-mail appears across sources</small></div></article>
+            <article class="api-box feature-box"><div class="api-art"><svg><use href="#i-globe"></use></svg></div><div><strong>Username FootPrint</strong><small>Map a username across public platforms</small></div></article>
+            <article class="api-box feature-box"><div class="api-art"><svg><use href="#i-user"></use></svg></div><div><strong>Roblox Username</strong><small>Review public Roblox profile signals</small></div></article>
+            <article class="api-box feature-box"><div class="api-art"><svg><use href="#i-link"></use></svg></div><div><strong>Roblox → Discord</strong><small>Review supported public profile links</small></div></article>
+            <article class="api-box feature-box"><div class="api-art"><svg><use href="#i-user"></use></svg></div><div><strong>Discord ID</strong><small>Review public metadata by Discord ID</small></div></article>
+            <article class="api-box feature-box"><div class="api-art"><svg><use href="#i-link"></use></svg></div><div><strong>Discord → Roblox</strong><small>Review supported cross-platform links</small></div></article>
+            <article class="api-box feature-box"><div class="api-art"><svg><use href="#i-user"></use></svg></div><div><strong>TikTok Username</strong><small>Public TikTok profile intelligence</small></div></article>
+            <article class="api-box feature-box"><div class="api-art"><svg><use href="#i-link"></use></svg></div><div><strong>E-Mail → TikTok</strong><small>Review supported public associations</small></div></article>
+            <article class="api-box feature-box"><div class="api-art"><svg><use href="#i-user"></use></svg></div><div><strong>Instagram Username</strong><small>Public Instagram profile intelligence</small></div></article>
+            <article class="api-box feature-box"><div class="api-art"><svg><use href="#i-link"></use></svg></div><div><strong>Phone → Instagram</strong><small>Review supported public associations</small></div></article>
+            <article class="api-box feature-box"><div class="api-art"><svg><use href="#i-card"></use></svg></div><div><strong>FiveM License</strong><small>Review supported FiveM license signals</small></div></article>
+            <article class="api-box feature-box"><div class="api-art"><svg><use href="#i-user"></use></svg></div><div><strong>FiveM User</strong><small>Search public FiveM user signals</small></div></article>
+            <article class="api-box feature-box"><div class="api-art"><svg><use href="#i-user"></use></svg></div><div><strong>Minecraft UUID</strong><small>Public Minecraft identity lookup</small></div></article>
+            <article class="api-box feature-box"><div class="api-art"><svg><use href="#i-user"></use></svg></div><div><strong>Steam ID</strong><small>Public Steam profile lookup</small></div></article>
+            <article class="api-box feature-box"><div class="api-art"><svg><use href="#i-search"></use></svg></div><div><strong>IntelX Lookup</strong><small>Search indexed intelligence sources</small></div></article>
+            <article class="api-box feature-box"><div class="api-art"><svg><use href="#i-camera"></use></svg></div><div><strong>Image GeoLocation</strong><small>Inspect image metadata and location signals</small></div></article>
+            <article class="api-box feature-box"><div class="api-art"><svg><use href="#i-cpu"></use></svg></div><div><strong>Machine View</strong><small>Structured machine-readable intelligence view</small></div></article>
+            <article class="api-box feature-box"><div class="api-art"><svg><use href="#i-network"></use></svg></div><div><strong>Graph Case File</strong><small>Visualize relationships between case entities</small></div></article>
           </div>
         </div>
       </div>
