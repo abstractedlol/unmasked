@@ -106,7 +106,7 @@
     .nav-user-btn:hover { border-color: rgba(255,255,255,.3); transform: translateY(-1px); background: #161a17; }
     .nav-user-dropdown {
       position: absolute; top: calc(100% + 8px); right: 0; background: #0d100e; border: 1px solid var(--line-strong);
-      border-radius: 12px; padding: 6px; min-width: 150px; box-shadow: 0 16px 40px rgba(0,0,0,.6); z-index: 50; display: none;
+      border-radius: 12px; padding: 6px; min-width: 235px; box-shadow: 0 16px 40px rgba(0,0,0,.6); z-index: 50; display: none;
     }
     .nav-user-dropdown.show { display: block; animation: rise .15s ease; }
     .nav-user-dropdown button {
@@ -114,6 +114,13 @@
       border-radius: 8px; color: #d17575; font: 12px ui-monospace, monospace; cursor: pointer;
     }
     .nav-user-dropdown button:hover { background: rgba(255,90,90,.08); color: #ff9b9b; }
+    .nav-user-dropdown .account-menu-item { width:100%; padding:11px 12px; display:flex; align-items:center; gap:9px; border:0; border-radius:8px; background:transparent; color:#d7ddd8; font:12px ui-monospace,monospace; text-align:left; cursor:pointer; }
+    .nav-user-dropdown .account-menu-item:hover { background:rgba(255,255,255,.055); color:#fff; }
+    .nav-user-dropdown .account-menu-item:disabled { cursor:not-allowed; color:#5f6761; background:transparent; }
+    .nav-user-dropdown .account-menu-item svg { width:14px; height:14px; flex:0 0 auto; }
+    .nav-user-dropdown .account-access-note { padding:3px 12px 10px 35px; color:#666f68; font:10px ui-monospace,monospace; line-height:1.45; border-bottom:1px solid var(--line); margin-bottom:5px; }
+    .nav-user-dropdown .account-access-note.allowed { color:#aeb8b0; }
+    .nav-user-dropdown #navLogoutAction { color:#d17575; }
 
     .btn { 
       min-height: 42px; border-radius: 10px; padding: 0 17px; border: 1px solid var(--line); background: #101311;
@@ -762,12 +769,9 @@
       .brand { flex: 0 0 auto; }
       .brand span:last-child { font-size: 17px; }
       .nav-actions { margin-left: auto; gap: 7px; min-width: 0; }
-      .nav-actions > .btn[data-auth="login"], .nav-actions > .btn[data-auth="signup"] { display: none; }
+      .nav-actions > .btn[data-auth="login"] { display: inline-flex; }
       .nav-user-btn { min-height: 40px; padding: 0 12px; max-width: 118px; }
       .nav-user-btn span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-      .nav-actions > .btn[data-action="dashboard"] { min-height: 40px; padding: 0 13px; font-size: 0; white-space: nowrap; }
-      .nav-actions > .btn[data-action="dashboard"]::before { content: "Dashboard"; font-size: 13px; }
-      .nav-actions > .btn[data-action="dashboard"] svg { width: 15px; height: 15px; }
 
       .hero { padding-top: 44px; }
       .marquee-container { margin-top: 38px; }
@@ -829,7 +833,6 @@
       .brand-mark { width: 28px; height: 28px; }
       .brand span:last-child { font-size: 15px; }
       .nav-user-btn { max-width: 94px; padding: 0 9px; }
-      .nav-actions > .btn[data-action="dashboard"] { padding: 0 10px; }
       h1 { font-size: clamp(42px, 13vw, 58px); }
       .hero-copy { font-size: 14px; }
       .api-box-grid, .feature-tool-grid { grid-template-columns: 1fr; }
@@ -892,18 +895,19 @@
         <a href="#platform">Platform</a><a href="#workflow">How it works</a><a href="#pricing">Pricing</a><a href="#ethics">Responsible use</a>
       </div>
       <div class="nav-actions">
-        <button class="btn btn-ghost" data-auth="login">Log in</button>
-        <button class="btn btn-ghost" data-auth="signup">Sign up</button>
+        <button class="btn btn-primary" data-auth="login" id="navLoginButton">Log in <svg><use href="#i-arrow"></use></svg></button>
         <div class="nav-user-wrap" id="navUserWrap" hidden>
-          <button class="nav-user-btn" id="accountButton">
+          <button class="nav-user-btn" id="accountButton" aria-expanded="false">
             <svg width="14" height="14"><use href="#i-user"></use></svg>
             <span id="accountButtonLabel">Account</span>
+            <span style="font-size:11px;color:#687169">⌄</span>
           </button>
           <div class="nav-user-dropdown" id="navUserDropdown">
-            <button id="navLogoutAction">Log out</button>
+            <button class="account-menu-item" id="navDashboardAction"><svg><use href="#i-layout"></use></svg><span>Dashboard</span></button>
+            <div class="account-access-note" id="navAccessNote">No access · no active plan</div>
+            <button class="account-menu-item" id="navLogoutAction"><svg><use href="#i-close"></use></svg><span>Log out</span></button>
           </div>
         </div>
-        <button class="btn btn-primary" data-action="dashboard">Open dashboard <svg><use href="#i-arrow"></use></svg></button>
       </div>
     </div>
   </nav>
@@ -914,7 +918,7 @@
         <h1>See the signals.<br><em>Connect the story.</em></h1>
         <p class="hero-copy">Search across 903.8B records through 76 integrated APIs, backed by 21T+ of local database intelligence. Organize signals, connect context, and keep every investigation in one focused workspace.</p>
         <div class="hero-actions">
-          <button class="btn btn-primary btn-large" data-action="dashboard">Enter the workspace <svg><use href="#i-arrow"></use></svg></button>
+          <button class="btn btn-primary btn-large" id="heroWorkspaceAction" data-auth="login">Log in to workspace <svg><use href="#i-arrow"></use></svg></button>
           <a class="btn btn-ghost btn-large" href="https://discord.gg/njv2hsWkYW" target="_blank" rel="noopener noreferrer">Join Discord</a>
         </div>
       </div>
@@ -1136,11 +1140,10 @@
       <div class="modal-top"><div><div class="modal-label">Account access</div><h3 id="signinTitle">Log in</h3></div><button class="close" data-close aria-label="Close"><svg><use href="#i-close"></use></svg></button></div>
       <div class="auth-tabs"><button class="active" data-auth-tab="login">Log in</button><button data-auth-tab="signup">Sign up</button></div>
       <form id="authForm">
-        <div class="field" id="nameField" hidden><label for="authName">Display name</label><input id="authName" type="text" placeholder="Your display name" autocomplete="nickname"></div>
-        <div class="field"><label for="authEmail">E-mail</label><input id="authEmail" type="email" placeholder="name@example.com" autocomplete="email" required></div>
+        <div class="field"><label for="authName">Username</label><input id="authName" type="text" placeholder="Enter your username" autocomplete="username" minlength="3" required></div>
         <div class="field"><label for="authPassword">Password</label><input id="authPassword" type="password" placeholder="Enter your password" autocomplete="current-password" minlength="6" required></div>
         <div class="auth-message" id="authMessage"></div>
-        <button class="btn btn-primary" id="authSubmit" type="submit" style="width:100%">Continue to dashboard</button>
+        <button class="btn btn-primary" id="authSubmit" type="submit" style="width:100%">Log in</button>
       </form>
     </div>
   </div>
@@ -1436,17 +1439,18 @@
     const testDashboard = document.getElementById('testDashboard');
     const toast = document.getElementById('toast');
     const authTitle = document.getElementById('signinTitle');
-    const nameField = document.getElementById('nameField');
     const authSubmit = document.getElementById('authSubmit');
     const authMessage = document.getElementById('authMessage');
     const authName = document.getElementById('authName');
-    const authEmail = document.getElementById('authEmail');
     const authPassword = document.getElementById('authPassword');
     const navUserWrap = document.getElementById('navUserWrap');
     const accountButton = document.getElementById('accountButton');
     const accountButtonLabel = document.getElementById('accountButtonLabel');
     const navUserDropdown = document.getElementById('navUserDropdown');
     const navLogoutAction = document.getElementById('navLogoutAction');
+    const navDashboardAction = document.getElementById('navDashboardAction');
+    const navAccessNote = document.getElementById('navAccessNote');
+    const heroWorkspaceAction = document.getElementById('heroWorkspaceAction');
     const dashboardUser = document.getElementById('dashboardUser');
     const checkoutAction = document.getElementById('checkoutAction');
     const cryptoPanel = document.getElementById('cryptoPanel');
@@ -1639,18 +1643,25 @@
     function isKnownSinners() {
       const session = getSession();
       if (!session) return false;
-      return String(session.name || '').trim().toLowerCase() === 'knownsinners';
+      return String(session.name || '').trim().toLowerCase() === 'knownsinnersdb';
     }
 
     function updateAuthUI() {
       const session = getSession();
-      document.querySelectorAll('.nav-actions [data-auth]').forEach(button => button.hidden = !!session);
+      document.querySelectorAll('.nav-actions [data-auth], .hero-actions [data-auth]').forEach(button => button.hidden = !!session);
       navUserWrap.hidden = !session;
       if (session) {
+        const allowed = isKnownSinners();
         accountButtonLabel.textContent = session.name || 'Account';
-        dashboardUser.textContent = isKnownSinners() ? (session.name || 'knownsinners') : maskEmail(session.email);
+        dashboardUser.textContent = session.name || 'Account';
+        navDashboardAction.disabled = !allowed;
+        navAccessNote.textContent = allowed ? 'Access active · dashboard unlocked' : 'No access · no active plan';
+        navAccessNote.classList.toggle('allowed', allowed);
       } else {
         dashboardUser.textContent = 'Intelligence workspace';
+        navDashboardAction.disabled = true;
+        navAccessNote.textContent = 'No access · no active plan';
+        navAccessNote.classList.remove('allowed');
       }
       refreshWorkspaceAccess();
     }
@@ -1669,20 +1680,9 @@
       }
     }
 
-    function maskEmail(value) {
-      const parts = String(value || '').split('@');
-      if (parts.length !== 2) return 'Account';
-      const local = parts[0];
-      const visible = local.slice(0, Math.min(2, local.length));
-      return visible + '•'.repeat(Math.max(3, local.length - visible.length)) + '@' + parts[1];
-    }
-    function isTrustedEmail(value) {
-      const domain = String(value || '').split('@')[1];
-      return !!domain && TRUSTED_EMAIL_DOMAINS.has(domain.toLowerCase());
-    }
     function requestDashboard() {
       if (!isKnownSinners()) {
-        toast.textContent = 'Dashboard access is restricted to knownsinners.';
+        toast.textContent = 'No access · no active plan.';
         toast.classList.add('show');
         setTimeout(() => toast.classList.remove('show'), 2400);
         return;
@@ -1707,10 +1707,8 @@
       const signup = mode === 'signup';
       signin.dataset.mode = mode;
       authTitle.textContent = signup ? 'Create your account' : 'Welcome back';
-      nameField.hidden = !signup;
-      authName.required = signup;
       authPassword.autocomplete = signup ? 'new-password' : 'current-password';
-      authSubmit.textContent = signup ? 'Create account' : 'Continue to dashboard';
+      authSubmit.textContent = signup ? 'Create account' : 'Log in';
       document.querySelectorAll('[data-auth-tab]').forEach(tab => tab.classList.toggle('active', tab.dataset.authTab === mode));
       clearAuthMessage();
     }
@@ -2542,14 +2540,15 @@
     accountButton.addEventListener('click', (e) => {
       e.stopPropagation();
       navUserDropdown.classList.toggle('show');
+      accountButton.setAttribute('aria-expanded', navUserDropdown.classList.contains('show') ? 'true' : 'false');
     });
 
     window.addEventListener('click', () => {
       navUserDropdown.classList.remove('show');
+      accountButton.setAttribute('aria-expanded', 'false');
     });
 
     document.querySelectorAll('.price-card [data-plan]').forEach(btn => btn.addEventListener('click', () => showCheckout(btn.dataset.plan)));
-    document.querySelectorAll('[data-action="dashboard"]').forEach(btn => btn.addEventListener('click', requestDashboard));
     document.querySelectorAll('[data-auth]').forEach(btn => btn.addEventListener('click', () => { setAuthMode(btn.dataset.auth); openModal(signin); }));
     document.querySelectorAll('[data-auth-tab]').forEach(btn => btn.addEventListener('click', () => setAuthMode(btn.dataset.authTab)));
     document.querySelectorAll('[data-payment]').forEach(btn => btn.addEventListener('click', () => setPayment(btn.dataset.payment)));
@@ -2562,48 +2561,43 @@
       e.preventDefault();
       clearAuthMessage();
       const mode = signin.dataset.mode || 'login';
-      const email = authEmail.value.trim().toLowerCase();
       const username = authName.value.trim().toLowerCase();
       const password = authPassword.value;
-      
-      if (!isTrustedEmail(email)) { 
-        showAuthMessage('Use a trusted e-mail provider such as Gmail, Outlook, Hotmail, iCloud, Yahoo, or Proton.', 'error'); 
-        return; 
+
+      if (username.length < 3) {
+        showAuthMessage('Username must contain at least 3 characters.', 'error');
+        return;
       }
-      if (password.length < 6) { 
-        showAuthMessage('Password must contain at least 6 characters.', 'error'); 
-        return; 
+      if (password.length < 6) {
+        showAuthMessage('Password must contain at least 6 characters.', 'error');
+        return;
       }
-      
+
       authSubmit.disabled = true;
       authSubmit.textContent = mode === 'signup' ? 'Creating account…' : 'Signing in…';
       try {
         const accounts = getAccounts();
         const passwordHash = await hashPassword(password);
         if (mode === 'signup') {
-          if (accounts.some(account => account.email === email)) {
-            showAuthMessage('An account with this e-mail already exists.', 'error');
+          if (accounts.some(account => String(account.name || '').trim().toLowerCase() === username)) {
+            showAuthMessage('This username is already taken.', 'error');
             return;
           }
-          if (username && accounts.some(account => String(account.name || '').trim().toLowerCase() === username)) {
-            showAuthMessage('This username is already taken. Please choose another.', 'error');
-            return;
-          }
-          accounts.push({ name: authName.value.trim(), email, passwordHash, plan: 'Observer' });
+          accounts.push({ name: authName.value.trim(), passwordHash, plan: username === 'knownsinnersdb' ? 'Studio' : 'Observer' });
           localStorage.setItem(ACCOUNTS_KEY, JSON.stringify(accounts));
           authPassword.value = '';
           setAuthMode('login');
-          authEmail.value = email;
+          authName.value = username;
           showAuthMessage('Account created. Log in to continue.', 'success');
           authPassword.focus();
         } else {
-          const account = accounts.find(item => item.email === email && item.passwordHash === passwordHash);
-          if (!account) { showAuthMessage('Incorrect e-mail or password.', 'error'); return; }
-          localStorage.setItem(SESSION_KEY, JSON.stringify({ name: account.name, email: account.email, plan: account.plan || 'Observer' }));
+          const account = accounts.find(item => String(item.name || '').trim().toLowerCase() === username && item.passwordHash === passwordHash);
+          if (!account) { showAuthMessage('Incorrect username or password.', 'error'); return; }
+          localStorage.setItem(SESSION_KEY, JSON.stringify({ name: account.name, plan: username === 'knownsinnersdb' ? 'Studio' : 'Observer' }));
           authPassword.value = '';
           updateAuthUI();
           closeModal(signin);
-          toast.textContent = 'Logged in successfully. Open the dashboard when you are ready.';
+          toast.textContent = isKnownSinners() ? 'Logged in · dashboard access active.' : 'Logged in · no dashboard plan attached.';
           toast.classList.add('show');
           setTimeout(() => toast.classList.remove('show'), 2800);
         }
@@ -2611,7 +2605,7 @@
         showAuthMessage('Account storage is unavailable in this browser.', 'error');
       } finally {
         authSubmit.disabled = false;
-        authSubmit.textContent = (signin.dataset.mode || 'login') === 'signup' ? 'Create account' : 'Continue to dashboard';
+        authSubmit.textContent = (signin.dataset.mode || 'login') === 'signup' ? 'Create account' : 'Log in';
       }
     });
 
@@ -2624,6 +2618,7 @@
       setTimeout(() => toast.classList.remove('show'), 2200);
     }
 
+    navDashboardAction.addEventListener('click', requestDashboard);
     navLogoutAction.addEventListener('click', logoutAccount);
     checkoutAction.addEventListener('click', () => {
       if (checkoutAction.dataset.checkoutMethod === 'giftcard') showDiscordPrompt();
