@@ -1,4 +1,5 @@
 <!doctype html>
+<!-- UNMASKED FIX V4: profile dashboard only + mobile auth fix + knownsinnersdb only -->
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -113,7 +114,13 @@
       width: 100%; padding: 9px 12px; text-align: left; background: transparent; border: 0;
       border-radius: 8px; color: #d17575; font: 12px ui-monospace, monospace; cursor: pointer;
     }
-    .nav-user-dropdown button:hover { background: rgba(255,90,90,.08); color: #ff9b9b; }
+    .nav-user-dropdown button:hover { background: rgba(255,255,255,.06); color: #fff; }
+    .nav-user-dropdown #navDashboardAction { color: #dfe5e0; }
+    .nav-user-dropdown #navLogoutAction { color: #d17575; }
+    .nav-user-dropdown #navLogoutAction:hover { background: rgba(255,90,90,.08); color: #ff9b9b; }
+    /* V4 nav guard: dashboard is profile-menu only. */
+    .nav-actions > [data-action="dashboard"] { display: none !important; }
+
 
     .btn { 
       min-height: 42px; border-radius: 10px; padding: 0 17px; border: 1px solid var(--line); background: #101311;
@@ -795,12 +802,9 @@
       .brand { flex: 0 0 auto; }
       .brand span:last-child { font-size: 17px; }
       .nav-actions { margin-left: auto; gap: 7px; min-width: 0; }
-      .nav-actions > .btn[data-auth="login"], .nav-actions > .btn[data-auth="signup"] { display: none; }
       .nav-user-btn { min-height: 40px; padding: 0 12px; max-width: 118px; }
+      .nav-actions > .btn[data-auth] { min-height: 40px; padding: 0 11px; font-size: 12.5px; }
       .nav-user-btn span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-      .nav-actions > .btn[data-action="dashboard"] { min-height: 40px; padding: 0 13px; font-size: 0; white-space: nowrap; }
-      .nav-actions > .btn[data-action="dashboard"]::before { content: "Dashboard"; font-size: 13px; }
-      .nav-actions > .btn[data-action="dashboard"] svg { width: 15px; height: 15px; }
 
       .hero { padding-top: 44px; }
       .marquee-container { margin-top: 38px; }
@@ -869,10 +873,17 @@
 
     @media (max-width: 430px) {
       .container { width: min(100% - 20px, 1160px); }
+      .nav-inner { width: 100%; }
+      .nav-actions { flex: 1 1 auto; justify-content: flex-end; overflow: visible; }
+      .nav-actions > .btn[data-auth]:not([hidden]) { display: inline-flex !important; flex: 0 0 auto; }
+      .nav-user-wrap { margin-left: auto; }
       .brand-mark { width: 28px; height: 28px; }
       .brand span:last-child { font-size: 15px; }
+      @media (max-width: 370px) {
+        .nav > .container .brand > span:last-child { display: none; }
+      }
       .nav-user-btn { max-width: 94px; padding: 0 9px; }
-      .nav-actions > .btn[data-action="dashboard"] { padding: 0 10px; }
+      .nav-actions > .btn[data-auth] { padding: 0 8px; font-size: 11.5px; }
       h1 { font-size: clamp(42px, 13vw, 58px); }
       .hero-copy { font-size: 14px; }
       .api-box-grid, .feature-tool-grid { grid-template-columns: 1fr; }
@@ -943,10 +954,11 @@
             <span id="accountButtonLabel">Account</span>
           </button>
           <div class="nav-user-dropdown" id="navUserDropdown">
+            <!-- Dashboard lives ONLY inside the profile menu and is shown ONLY to knownsinnersdb. -->
+            <button id="navDashboardAction" hidden>Dashboard</button>
             <button id="navLogoutAction">Log out</button>
           </div>
         </div>
-        <button class="btn btn-primary" data-action="dashboard">Open dashboard <svg><use href="#i-arrow"></use></svg></button>
       </div>
     </div>
   </nav>
@@ -1501,6 +1513,7 @@
     const accountButton = document.getElementById('accountButton');
     const accountButtonLabel = document.getElementById('accountButtonLabel');
     const navUserDropdown = document.getElementById('navUserDropdown');
+    const navDashboardAction = document.getElementById('navDashboardAction');
     const navLogoutAction = document.getElementById('navLogoutAction');
     const dashboardUser = document.getElementById('dashboardUser');
     const checkoutAction = document.getElementById('checkoutAction');
@@ -1693,10 +1706,10 @@
       authMessage.className = 'auth-message';
     }
     
-    function isKnownSinners() {
+    function hasDashboardAccess() {
       const session = getSession();
       if (!session) return false;
-      return String(session.name || '').trim().toLowerCase() === 'knownsinners';
+      return String(session.name || '').trim().toLowerCase() === 'knownsinnersdb';
     }
 
     function updateAuthUI() {
@@ -1706,14 +1719,16 @@
       if (session) {
         accountButtonLabel.textContent = session.name || 'Account';
         dashboardUser.textContent = session.name || 'Account';
+        navDashboardAction.hidden = !hasDashboardAccess();
       } else {
         dashboardUser.textContent = 'Intelligence workspace';
+        navDashboardAction.hidden = true;
       }
       refreshWorkspaceAccess();
     }
 
     function refreshWorkspaceAccess() {
-      const privileged = isKnownSinners();
+      const privileged = hasDashboardAccess();
       if (privileged) {
         toolInput.disabled = false;
         toolLock.hidden = true;
@@ -1727,8 +1742,8 @@
     }
 
     function requestDashboard() {
-      if (!isKnownSinners()) {
-        toast.textContent = 'Dashboard access is restricted to knownsinners.';
+      if (!hasDashboardAccess()) {
+        toast.textContent = 'Dashboard access is restricted to knownsinnersdb.';
         toast.classList.add('show');
         setTimeout(() => toast.classList.remove('show'), 2400);
         return;
@@ -1839,7 +1854,7 @@
       const tool = detectSmartTool(query);
       switchTool(tool);
       toolInput.value = query;
-      if (isKnownSinners()) executeLookup(query);
+      if (hasDashboardAccess()) executeLookup(query);
       else refreshWorkspaceAccess();
     }
     function renderOverviewHome() {
@@ -1930,7 +1945,7 @@
         refreshWorkspaceAccess();
 
         const currentTabState = tabSearchState[activeTool];
-        if (currentTabState && isKnownSinners()) {
+        if (currentTabState && hasDashboardAccess()) {
           toolInput.value = currentTabState.query || '';
           renderResults(currentTabState.page || 1);
         } else {
@@ -2760,6 +2775,10 @@
       setTimeout(() => toast.classList.remove('show'), 2200);
     }
 
+    navDashboardAction.addEventListener('click', () => {
+      navUserDropdown.classList.remove('show');
+      requestDashboard();
+    });
     navLogoutAction.addEventListener('click', logoutAccount);
     checkoutAction.addEventListener('click', () => {
       if (checkoutAction.dataset.checkoutMethod === 'giftcard') showDiscordPrompt();
@@ -2796,7 +2815,7 @@
       if (historyTarget) {
         const id = Number(historyTarget.dataset.historyId || historyTarget.dataset.historyRun);
         const item = getSearchHistory().find(entry => entry.id === id);
-        if (item) { switchTool(item.tool); toolInput.value = item.query; if (isKnownSinners()) executeLookup(item.query); }
+        if (item) { switchTool(item.tool); toolInput.value = item.query; if (hasDashboardAccess()) executeLookup(item.query); }
       }
       const caseOpen = e.target.closest('[data-case-id]');
       if (caseOpen) switchTool('Cases');
