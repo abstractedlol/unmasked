@@ -106,7 +106,7 @@
     .nav-user-btn:hover { border-color: rgba(255,255,255,.3); transform: translateY(-1px); background: #161a17; }
     .nav-user-dropdown {
       position: absolute; top: calc(100% + 8px); right: 0; background: #0d100e; border: 1px solid var(--line-strong);
-      border-radius: 12px; padding: 6px; min-width: 235px; box-shadow: 0 16px 40px rgba(0,0,0,.6); z-index: 50; display: none;
+      border-radius: 12px; padding: 6px; min-width: 150px; box-shadow: 0 16px 40px rgba(0,0,0,.6); z-index: 50; display: none;
     }
     .nav-user-dropdown.show { display: block; animation: rise .15s ease; }
     .nav-user-dropdown button {
@@ -114,13 +114,6 @@
       border-radius: 8px; color: #d17575; font: 12px ui-monospace, monospace; cursor: pointer;
     }
     .nav-user-dropdown button:hover { background: rgba(255,90,90,.08); color: #ff9b9b; }
-    .nav-user-dropdown .account-menu-item { width:100%; padding:11px 12px; display:flex; align-items:center; gap:9px; border:0; border-radius:8px; background:transparent; color:#d7ddd8; font:12px ui-monospace,monospace; text-align:left; cursor:pointer; }
-    .nav-user-dropdown .account-menu-item:hover { background:rgba(255,255,255,.055); color:#fff; }
-    .nav-user-dropdown .account-menu-item:disabled { cursor:not-allowed; color:#5f6761; background:transparent; }
-    .nav-user-dropdown .account-menu-item svg { width:14px; height:14px; flex:0 0 auto; }
-    .nav-user-dropdown .account-access-note { padding:3px 12px 10px 35px; color:#666f68; font:10px ui-monospace,monospace; line-height:1.45; border-bottom:1px solid var(--line); margin-bottom:5px; }
-    .nav-user-dropdown .account-access-note.allowed { color:#aeb8b0; }
-    .nav-user-dropdown #navLogoutAction { color:#d17575; }
 
     .btn { 
       min-height: 42px; border-radius: 10px; padding: 0 17px; border: 1px solid var(--line); background: #101311;
@@ -412,6 +405,39 @@
       padding: 3px 8px; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); border-radius: 6px;
     }
     .overview-service .service-badge::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: #fff; }
+
+    .overview-simple-head { margin-bottom: 20px; }
+    .smart-search { min-height: 60px; display: flex; align-items: center; gap: 12px; padding: 7px 7px 7px 16px; border: 1px solid rgba(255,255,255,.18); border-radius: 14px; background: #101311; }
+    .smart-search > svg { width: 18px; height: 18px; color: #767e78; flex: 0 0 auto; }
+    .smart-search input { flex: 1; min-width: 0; height: 44px; border: 0; outline: 0; background: transparent; color: #fff; font-size: 14px; }
+    .smart-search-hint { margin: 8px 2px 24px; color: #626b64; font: 10.5px ui-monospace,monospace; }
+    .overview-grid-clean { margin-bottom: 18px; }
+    .overview-split { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .overview-list-card { border: 1px solid var(--line); border-radius: 14px; background: #0c0f0d; overflow: hidden; }
+    .overview-list-head { min-height: 48px; padding: 0 16px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); }
+    .overview-list-head strong { font-size: 13px; }
+    .mini-link { border: 0; background: transparent; color: #8d968f; font: 11px ui-monospace,monospace; cursor: pointer; }
+    .mini-link:hover { color: #fff; }
+    .overview-list-body { min-height: 150px; padding: 8px; }
+    .mini-row { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px; border: 0; border-bottom: 1px solid rgba(255,255,255,.045); background: transparent; color: #dce2dd; text-align: left; cursor: pointer; }
+    .mini-row:last-child { border-bottom: 0; }
+    .mini-row:hover { background: rgba(255,255,255,.03); }
+    .mini-row-main { min-width: 0; }
+    .mini-row-main strong { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; }
+    .mini-row-main small { color: #69716b; font: 10px ui-monospace,monospace; }
+    .mini-row-meta { color: #707970; font: 10px ui-monospace,monospace; white-space: nowrap; }
+    .empty-state { padding: 24px 14px; color: #687069; font-size: 12px; line-height: 1.5; }
+    .case-create { display: grid; grid-template-columns: 1fr auto; gap: 10px; margin-bottom: 20px; }
+    .case-create input { height: 44px; border: 1px solid var(--line); border-radius: 10px; background: #0f1210; color: #fff; padding: 0 13px; outline: 0; }
+    .case-list, .history-list { display: grid; gap: 10px; }
+    .case-card, .history-item { border: 1px solid var(--line); border-radius: 12px; background: #0c0f0d; padding: 15px 16px; }
+    .case-card-top, .history-item { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+    .case-card strong, .history-item strong { font-size: 13px; color: #eef3ef; }
+    .case-meta, .history-meta { color: #69726b; font: 10.5px ui-monospace,monospace; margin-top: 4px; }
+    .case-actions, .history-actions { display: flex; gap: 7px; flex-wrap: wrap; }
+    .small-btn { height: 32px; padding: 0 10px; border: 1px solid var(--line); border-radius: 8px; background: #111412; color: #aeb7b0; font: 10.5px ui-monospace,monospace; cursor: pointer; }
+    .small-btn:hover { border-color: rgba(255,255,255,.28); color: #fff; }
+    .history-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; }
 
     .appearance-section { margin-bottom: 34px; }
     .theme-grid { display: grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap: 14px; }
@@ -769,9 +795,12 @@
       .brand { flex: 0 0 auto; }
       .brand span:last-child { font-size: 17px; }
       .nav-actions { margin-left: auto; gap: 7px; min-width: 0; }
-      .nav-actions > .btn[data-auth="login"] { display: inline-flex; }
+      .nav-actions > .btn[data-auth="login"], .nav-actions > .btn[data-auth="signup"] { display: none; }
       .nav-user-btn { min-height: 40px; padding: 0 12px; max-width: 118px; }
       .nav-user-btn span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+      .nav-actions > .btn[data-action="dashboard"] { min-height: 40px; padding: 0 13px; font-size: 0; white-space: nowrap; }
+      .nav-actions > .btn[data-action="dashboard"]::before { content: "Dashboard"; font-size: 13px; }
+      .nav-actions > .btn[data-action="dashboard"] svg { width: 15px; height: 15px; }
 
       .hero { padding-top: 44px; }
       .marquee-container { margin-top: 38px; }
@@ -828,11 +857,22 @@
       .mv-main-grid { grid-template-columns: 1fr; }
     }
 
+    @media (max-width: 760px) {
+      .overview-split { grid-template-columns: 1fr; }
+      .smart-search { display: grid; grid-template-columns: auto 1fr; }
+      .smart-search .btn { grid-column: 1 / -1; width: 100%; }
+      .case-create { grid-template-columns: 1fr; }
+      .case-create .btn { width: 100%; }
+      .history-head { flex-direction: column; }
+      .history-item, .case-card-top { align-items: flex-start; flex-direction: column; }
+    }
+
     @media (max-width: 430px) {
       .container { width: min(100% - 20px, 1160px); }
       .brand-mark { width: 28px; height: 28px; }
       .brand span:last-child { font-size: 15px; }
       .nav-user-btn { max-width: 94px; padding: 0 9px; }
+      .nav-actions > .btn[data-action="dashboard"] { padding: 0 10px; }
       h1 { font-size: clamp(42px, 13vw, 58px); }
       .hero-copy { font-size: 14px; }
       .api-box-grid, .feature-tool-grid { grid-template-columns: 1fr; }
@@ -895,19 +935,18 @@
         <a href="#platform">Platform</a><a href="#workflow">How it works</a><a href="#pricing">Pricing</a><a href="#ethics">Responsible use</a>
       </div>
       <div class="nav-actions">
-        <button class="btn btn-primary" data-auth="login" id="navLoginButton">Log in <svg><use href="#i-arrow"></use></svg></button>
+        <button class="btn btn-ghost" data-auth="login">Log in</button>
+        <button class="btn btn-ghost" data-auth="signup">Sign up</button>
         <div class="nav-user-wrap" id="navUserWrap" hidden>
-          <button class="nav-user-btn" id="accountButton" aria-expanded="false">
+          <button class="nav-user-btn" id="accountButton">
             <svg width="14" height="14"><use href="#i-user"></use></svg>
             <span id="accountButtonLabel">Account</span>
-            <span style="font-size:11px;color:#687169">⌄</span>
           </button>
           <div class="nav-user-dropdown" id="navUserDropdown">
-            <button class="account-menu-item" id="navDashboardAction"><svg><use href="#i-layout"></use></svg><span>Dashboard</span></button>
-            <div class="account-access-note" id="navAccessNote">No access · no active plan</div>
-            <button class="account-menu-item" id="navLogoutAction"><svg><use href="#i-close"></use></svg><span>Log out</span></button>
+            <button id="navLogoutAction">Log out</button>
           </div>
         </div>
+        <button class="btn btn-primary" data-action="dashboard">Open dashboard <svg><use href="#i-arrow"></use></svg></button>
       </div>
     </div>
   </nav>
@@ -918,7 +957,7 @@
         <h1>See the signals.<br><em>Connect the story.</em></h1>
         <p class="hero-copy">Search across 903.8B records through 76 integrated APIs, backed by 21T+ of local database intelligence. Organize signals, connect context, and keep every investigation in one focused workspace.</p>
         <div class="hero-actions">
-          <button class="btn btn-primary btn-large" id="heroWorkspaceAction" data-auth="login">Log in to workspace <svg><use href="#i-arrow"></use></svg></button>
+          <button class="btn btn-primary btn-large" data-action="dashboard">Enter the workspace <svg><use href="#i-arrow"></use></svg></button>
           <a class="btn btn-ghost btn-large" href="https://discord.gg/njv2hsWkYW" target="_blank" rel="noopener noreferrer">Join Discord</a>
         </div>
       </div>
@@ -1165,6 +1204,8 @@
           <div class="dash-group">
             <div class="dash-group-title">Dashboard</div>
             <button class="tool-tab active" data-tool="Overview"><svg><use href="#i-layout"></use></svg>Overview</button>
+            <button class="tool-tab" data-tool="Cases"><svg><use href="#i-folder"></use></svg>Cases</button>
+            <button class="tool-tab" data-tool="History"><svg><use href="#i-search"></use></svg>History</button>
             <button class="tool-tab" data-tool="Themes"><svg><use href="#i-palette"></use></svg>Themes</button>
           </div>
           <div class="dash-group">
@@ -1221,64 +1262,77 @@
           <div class="test-main-head reveal"><div><div class="section-label">Dashboard</div><h2 id="toolTitle">Overview</h2><p id="toolDescription">Workspace metrics and recent case activity.</p></div></div>
           <div class="tool-workspace reveal reveal-delay-1">
             <section class="dashboard-panel" id="overviewPanel">
-              <div class="overview-hero reveal">
-                <div class="overview-hero-copy">
-                  <p class="panel-kicker">Operational Core</p>
-                  <h3 class="panel-heading">Global Intelligence Infrastructure</h3>
-                  <p class="panel-copy">Real-time indexing telemetry, federated pipeline status, and federated endpoints synchronized across our active nodes.</p>
-                </div>
-                <div class="overview-orbit" aria-label="All systems online">
-                  <strong>ONLINE</strong>
-                  <small>NODE 01-US</small>
+              <div class="overview-simple-head">
+                <div>
+                  <p class="panel-kicker">Workspace</p>
+                  <h3 class="panel-heading">Search, save, keep moving.</h3>
+                  <p class="panel-copy">Start with any common identifier. Unmasked picks the matching lookup and keeps recent work close by.</p>
                 </div>
               </div>
-              
-              <div class="overview-grid">
-                <article class="overview-stat reveal reveal-delay-1">
-                  <div class="overview-stat-label"><span class="status-live"></span>Network Uptime</div>
-                  <div class="overview-stat-value">99.98%</div>
-                  <div class="overview-stat-note">Rolling 90-day window</div>
-                </article>
-                <article class="overview-stat reveal reveal-delay-2">
-                  <div class="overview-stat-label"><svg width="13" height="13"><use href="#i-network"></use></svg>Data Sources</div>
+
+              <form class="smart-search" id="smartSearchForm">
+                <svg><use href="#i-search"></use></svg>
+                <input id="smartSearchInput" type="text" placeholder="Search email, username, IP, phone, Discord ID…" autocomplete="off">
+                <button class="btn btn-primary" type="submit">Search</button>
+              </form>
+              <div class="smart-search-hint" id="smartSearchHint">Auto-detects common identifier types.</div>
+
+              <div class="overview-grid overview-grid-clean">
+                <article class="overview-stat">
+                  <div class="overview-stat-label">Sources</div>
                   <div class="overview-stat-value">76</div>
-                  <div class="overview-stat-note">Integrated API engines</div>
+                  <div class="overview-stat-note">Integrated lookups</div>
                 </article>
-                <article class="overview-stat reveal reveal-delay-3">
-                  <div class="overview-stat-label"><svg width="13" height="13"><use href="#i-globe"></use></svg>Indexed Records</div>
+                <article class="overview-stat">
+                  <div class="overview-stat-label">Records</div>
                   <div class="overview-stat-value">903.8B</div>
-                  <div class="overview-stat-note">Public data entries</div>
+                  <div class="overview-stat-note">Indexed dataset size</div>
                 </article>
-                <article class="overview-stat reveal reveal-delay-1">
-                  <div class="overview-stat-label"><svg width="13" height="13"><use href="#i-cpu"></use></svg>Local Database</div>
-                  <div class="overview-stat-value">21T+</div>
-                  <div class="overview-stat-note">Locally indexed data footprint</div>
+                <article class="overview-stat">
+                  <div class="overview-stat-label">Cases</div>
+                  <div class="overview-stat-value" id="overviewCaseCount">0</div>
+                  <div class="overview-stat-note">Saved locally</div>
+                </article>
+                <article class="overview-stat">
+                  <div class="overview-stat-label">Recent searches</div>
+                  <div class="overview-stat-value" id="overviewHistoryCount">0</div>
+                  <div class="overview-stat-note">Stored on this device</div>
                 </article>
               </div>
 
-              <div class="overview-services">
-                <div class="overview-service reveal reveal-delay-1">
-                  <div>
-                    <strong style="display:block;color:#fff;font-size:13.5px;margin-bottom:2px">Identity Federation Gateway</strong>
-                    <span style="font-size:11px;color:#737d75">76/76 Active Public Connectors</span>
-                  </div>
-                  <span class="service-badge">Operational</span>
-                </div>
-                <div class="overview-service reveal reveal-delay-2">
-                  <div>
-                    <strong style="display:block;color:#fff;font-size:13.5px;margin-bottom:2px">IntelX & Darknet Gateway</strong>
-                    <span style="font-size:11px;color:#737d75">Encrypted Tunnel Stream</span>
-                  </div>
-                  <span class="service-badge">Operational</span>
-                </div>
-                <div class="overview-service reveal reveal-delay-3">
-                  <div>
-                    <strong style="display:block;color:#fff;font-size:13.5px;margin-bottom:2px">Entity Graph Visualization</strong>
-                    <span style="font-size:11px;color:#737d75">Interactive Node Engine v2</span>
-                  </div>
-                  <span class="service-badge">Operational</span>
-                </div>
+              <div class="overview-split">
+                <section class="overview-list-card">
+                  <div class="overview-list-head"><strong>Recent searches</strong><button class="mini-link" type="button" data-open-tool="History">View all</button></div>
+                  <div id="overviewRecentSearches" class="overview-list-body"></div>
+                </section>
+                <section class="overview-list-card">
+                  <div class="overview-list-head"><strong>Cases</strong><button class="mini-link" type="button" data-open-tool="Cases">Manage</button></div>
+                  <div id="overviewRecentCases" class="overview-list-body"></div>
+                </section>
               </div>
+            </section>
+
+            <section class="dashboard-panel" id="casesPanel" hidden>
+              <p class="panel-kicker">Cases</p>
+              <h3 class="panel-heading">Saved cases</h3>
+              <p class="panel-copy">Create a case to group searches and notes on this device.</p>
+              <form class="case-create" id="caseCreateForm">
+                <input id="caseNameInput" type="text" placeholder="Case name" maxlength="60" required>
+                <button class="btn btn-primary" type="submit">New case</button>
+              </form>
+              <div id="casesList" class="case-list"></div>
+            </section>
+
+            <section class="dashboard-panel" id="historyPanel" hidden>
+              <div class="history-head">
+                <div>
+                  <p class="panel-kicker">History</p>
+                  <h3 class="panel-heading">Search history</h3>
+                  <p class="panel-copy">Recent searches from this browser. Re-run any query with one tap.</p>
+                </div>
+                <button class="btn btn-ghost" id="clearHistoryBtn" type="button">Clear history</button>
+              </div>
+              <div id="historyList" class="history-list"></div>
             </section>
 
             <section class="dashboard-panel" id="themesPanel" hidden>
@@ -1448,15 +1502,14 @@
     const accountButtonLabel = document.getElementById('accountButtonLabel');
     const navUserDropdown = document.getElementById('navUserDropdown');
     const navLogoutAction = document.getElementById('navLogoutAction');
-    const navDashboardAction = document.getElementById('navDashboardAction');
-    const navAccessNote = document.getElementById('navAccessNote');
-    const heroWorkspaceAction = document.getElementById('heroWorkspaceAction');
     const dashboardUser = document.getElementById('dashboardUser');
     const checkoutAction = document.getElementById('checkoutAction');
     const cryptoPanel = document.getElementById('cryptoPanel');
     const giftPanel = document.getElementById('giftPanel');
     const copyAddressBtn = document.getElementById('copyAddressBtn');
     const overviewPanel = document.getElementById('overviewPanel');
+    const casesPanel = document.getElementById('casesPanel');
+    const historyPanel = document.getElementById('historyPanel');
     const themesPanel = document.getElementById('themesPanel');
     const graphBuilderPanel = document.getElementById('graphBuilderPanel');
     const lookupPanel = document.getElementById('lookupPanel');
@@ -1477,11 +1530,9 @@
     const discordDossierContainer = document.getElementById('discordDossierContainer');
     const machineViewContainer = document.getElementById('machineViewContainer');
 
-    const TRUSTED_EMAIL_DOMAINS = new Set([
-      'gmail.com','googlemail.com','outlook.com','hotmail.com','live.com','msn.com',
-      'icloud.com','me.com','mac.com','yahoo.com','yahoo.co.uk','proton.me','protonmail.com',
-      'aol.com','zoho.com','mail.com','gmx.com','gmx.net','fastmail.com','hey.com'
-    ]);
+    const HISTORY_KEY = 'unmasked_search_history_v1';
+    const CASES_KEY = 'unmasked_cases_v1';
+
 
     const coinWallets = {
       ETH: ['Ethereum network', '0x061528A749975bAc65fa7883906F8c8dC23d997B'],
@@ -1493,7 +1544,9 @@
     };
 
     const toolCopy = {
-      'Overview': ['Workspace metrics and recent case activity.', 'Overview does not require an input'],
+      'Overview': ['Search, cases, and recent activity.', 'Overview does not require an input'],
+      'Cases': ['Create and manage saved investigation cases.', 'Cases do not require an input'],
+      'History': ['Review and re-run recent searches.', 'History does not require an input'],
       'Themes': ['Personalize the appearance of your investigation workspace.', 'Theme controls unlock with your account'],
       'Username': ['Review public-source signals connected to a username.', 'Enter a username'],
       'Name': ['Search public records using a person or organization name.', 'Enter a full name'],
@@ -1643,25 +1696,18 @@
     function isKnownSinners() {
       const session = getSession();
       if (!session) return false;
-      return String(session.name || '').trim().toLowerCase() === 'knownsinnersdb';
+      return String(session.name || '').trim().toLowerCase() === 'knownsinners';
     }
 
     function updateAuthUI() {
       const session = getSession();
-      document.querySelectorAll('.nav-actions [data-auth], .hero-actions [data-auth]').forEach(button => button.hidden = !!session);
+      document.querySelectorAll('.nav-actions [data-auth]').forEach(button => button.hidden = !!session);
       navUserWrap.hidden = !session;
       if (session) {
-        const allowed = isKnownSinners();
         accountButtonLabel.textContent = session.name || 'Account';
         dashboardUser.textContent = session.name || 'Account';
-        navDashboardAction.disabled = !allowed;
-        navAccessNote.textContent = allowed ? 'Access active · dashboard unlocked' : 'No access · no active plan';
-        navAccessNote.classList.toggle('allowed', allowed);
       } else {
         dashboardUser.textContent = 'Intelligence workspace';
-        navDashboardAction.disabled = true;
-        navAccessNote.textContent = 'No access · no active plan';
-        navAccessNote.classList.remove('allowed');
       }
       refreshWorkspaceAccess();
     }
@@ -1682,7 +1728,7 @@
 
     function requestDashboard() {
       if (!isKnownSinners()) {
-        toast.textContent = 'No access · no active plan.';
+        toast.textContent = 'Dashboard access is restricted to knownsinners.';
         toast.classList.add('show');
         setTimeout(() => toast.classList.remove('show'), 2400);
         return;
@@ -1707,6 +1753,7 @@
       const signup = mode === 'signup';
       signin.dataset.mode = mode;
       authTitle.textContent = signup ? 'Create your account' : 'Welcome back';
+      authName.autocomplete = 'username';
       authPassword.autocomplete = signup ? 'new-password' : 'current-password';
       authSubmit.textContent = signup ? 'Create account' : 'Log in';
       document.querySelectorAll('[data-auth-tab]').forEach(tab => tab.classList.toggle('active', tab.dataset.authTab === mode));
@@ -1754,6 +1801,94 @@
       document.querySelectorAll('[data-font-option]').forEach(card => card.classList.toggle('active', card.dataset.fontOption === selected));
     }
     
+    function getSearchHistory() {
+      try { return JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]'); }
+      catch { return []; }
+    }
+    function setSearchHistory(items) {
+      localStorage.setItem(HISTORY_KEY, JSON.stringify(items.slice(0, 100)));
+    }
+    function addSearchHistory(tool, query) {
+      const value = String(query || '').trim();
+      if (!value || ['Overview','Cases','History','Themes','Graph Case File'].includes(tool)) return;
+      const items = getSearchHistory().filter(item => !(item.tool === tool && item.query.toLowerCase() === value.toLowerCase()));
+      items.unshift({ id: Date.now(), tool, query: value, at: new Date().toISOString() });
+      setSearchHistory(items);
+      renderOverviewHome();
+    }
+    function getCases() {
+      try { return JSON.parse(localStorage.getItem(CASES_KEY) || '[]'); }
+      catch { return []; }
+    }
+    function setCases(items) { localStorage.setItem(CASES_KEY, JSON.stringify(items)); }
+    function formatTime(value) {
+      try { return new Date(value).toLocaleString([], { month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' }); }
+      catch { return ''; }
+    }
+    function detectSmartTool(raw) {
+      const q = String(raw || '').trim();
+      if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(q)) return 'E-Mail';
+      if (/^(?:\d{1,3}\.){3}\d{1,3}$/.test(q) || q.includes(':')) return 'IP Lookup';
+      if (/^\+?[0-9][0-9 ()-]{7,}$/.test(q)) return 'Phone';
+      if (/^\d{17,20}$/.test(q)) return 'Discord ID';
+      return 'Username';
+    }
+    function runSmartSearch(raw) {
+      const query = String(raw || '').trim();
+      if (!query) return;
+      const tool = detectSmartTool(query);
+      switchTool(tool);
+      toolInput.value = query;
+      if (isKnownSinners()) executeLookup(query);
+      else refreshWorkspaceAccess();
+    }
+    function renderOverviewHome() {
+      const caseCount = document.getElementById('overviewCaseCount');
+      const historyCount = document.getElementById('overviewHistoryCount');
+      const recentSearches = document.getElementById('overviewRecentSearches');
+      const recentCases = document.getElementById('overviewRecentCases');
+      if (!caseCount || !historyCount || !recentSearches || !recentCases) return;
+      const cases = getCases();
+      const history = getSearchHistory();
+      caseCount.textContent = cases.length;
+      historyCount.textContent = history.length;
+      recentSearches.innerHTML = history.length ? history.slice(0,4).map(item => `
+        <button class="mini-row" type="button" data-history-id="${item.id}">
+          <span class="mini-row-main"><strong>${escapeHtml(item.query)}</strong><small>${escapeHtml(item.tool)}</small></span>
+          <span class="mini-row-meta">${formatTime(item.at)}</span>
+        </button>`).join('') : '<div class="empty-state">No searches yet. Use the search bar above to start.</div>';
+      recentCases.innerHTML = cases.length ? cases.slice(0,4).map(item => `
+        <button class="mini-row" type="button" data-case-id="${item.id}">
+          <span class="mini-row-main"><strong>${escapeHtml(item.name)}</strong><small>${item.items?.length || 0} saved searches</small></span>
+          <span class="mini-row-meta">${formatTime(item.updatedAt || item.createdAt)}</span>
+        </button>`).join('') : '<div class="empty-state">No cases yet. Create one when you want to group searches.</div>';
+    }
+    function escapeHtml(value) {
+      return String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[ch]));
+    }
+    function renderCases() {
+      const list = document.getElementById('casesList');
+      if (!list) return;
+      const cases = getCases();
+      list.innerHTML = cases.length ? cases.map(item => `
+        <article class="case-card">
+          <div class="case-card-top">
+            <div><strong>${escapeHtml(item.name)}</strong><div class="case-meta">${item.items?.length || 0} saved searches · updated ${formatTime(item.updatedAt || item.createdAt)}</div></div>
+            <div class="case-actions"><button class="small-btn" type="button" data-case-add="${item.id}">Add latest search</button><button class="small-btn" type="button" data-case-delete="${item.id}">Delete</button></div>
+          </div>
+        </article>`).join('') : '<div class="empty-state">No cases yet. Create your first case above.</div>';
+    }
+    function renderHistory() {
+      const list = document.getElementById('historyList');
+      if (!list) return;
+      const history = getSearchHistory();
+      list.innerHTML = history.length ? history.map(item => `
+        <article class="history-item">
+          <div><strong>${escapeHtml(item.query)}</strong><div class="history-meta">${escapeHtml(item.tool)} · ${formatTime(item.at)}</div></div>
+          <div class="history-actions"><button class="small-btn" type="button" data-history-run="${item.id}">Run again</button></div>
+        </article>`).join('') : '<div class="empty-state">No search history yet.</div>';
+    }
+
     function switchTool(tool) {
       if (isSearching) return;
       activeTool = tool;
@@ -1764,13 +1899,20 @@
       
       const isOverview = tool === 'Overview';
       const isThemes = tool === 'Themes';
+      const isCases = tool === 'Cases';
+      const isHistory = tool === 'History';
       const isGraph = tool === 'Graph Case File';
       const isImageGeo = tool === 'Image GeoLocation';
 
       overviewPanel.hidden = !isOverview;
+      casesPanel.hidden = !isCases;
+      historyPanel.hidden = !isHistory;
       themesPanel.hidden = !isThemes;
       graphBuilderPanel.hidden = !isGraph;
-      lookupPanel.hidden = isOverview || isThemes || isGraph;
+      lookupPanel.hidden = isOverview || isCases || isHistory || isThemes || isGraph;
+      if (isOverview) renderOverviewHome();
+      if (isCases) renderCases();
+      if (isHistory) renderHistory();
 
       if (isImageGeo) {
         toolSearchForm.hidden = true;
@@ -2391,6 +2533,8 @@
       if (isSearching) return;
       const targetTool = activeTool;
       const cleaned = (query || '').trim().toLowerCase();
+      if (!cleaned) return;
+      addSearchHistory(targetTool, query);
       
       isSearching = true;
       toolInput.disabled = true;
@@ -2540,15 +2684,14 @@
     accountButton.addEventListener('click', (e) => {
       e.stopPropagation();
       navUserDropdown.classList.toggle('show');
-      accountButton.setAttribute('aria-expanded', navUserDropdown.classList.contains('show') ? 'true' : 'false');
     });
 
     window.addEventListener('click', () => {
       navUserDropdown.classList.remove('show');
-      accountButton.setAttribute('aria-expanded', 'false');
     });
 
     document.querySelectorAll('.price-card [data-plan]').forEach(btn => btn.addEventListener('click', () => showCheckout(btn.dataset.plan)));
+    document.querySelectorAll('[data-action="dashboard"]').forEach(btn => btn.addEventListener('click', requestDashboard));
     document.querySelectorAll('[data-auth]').forEach(btn => btn.addEventListener('click', () => { setAuthMode(btn.dataset.auth); openModal(signin); }));
     document.querySelectorAll('[data-auth-tab]').forEach(btn => btn.addEventListener('click', () => setAuthMode(btn.dataset.authTab)));
     document.querySelectorAll('[data-payment]').forEach(btn => btn.addEventListener('click', () => setPayment(btn.dataset.payment)));
@@ -2564,8 +2707,8 @@
       const username = authName.value.trim().toLowerCase();
       const password = authPassword.value;
 
-      if (username.length < 3) {
-        showAuthMessage('Username must contain at least 3 characters.', 'error');
+      if (!/^[a-z0-9._-]{3,24}$/i.test(username)) {
+        showAuthMessage('Username must be 3–24 characters and use letters, numbers, dots, dashes, or underscores.', 'error');
         return;
       }
       if (password.length < 6) {
@@ -2583,23 +2726,22 @@
             showAuthMessage('This username is already taken.', 'error');
             return;
           }
-          accounts.push({ name: authName.value.trim(), passwordHash, plan: username === 'knownsinnersdb' ? 'Studio' : 'Observer' });
+          accounts.push({ name: authName.value.trim(), passwordHash, plan: 'Observer' });
           localStorage.setItem(ACCOUNTS_KEY, JSON.stringify(accounts));
           authPassword.value = '';
           setAuthMode('login');
-          authName.value = username;
           showAuthMessage('Account created. Log in to continue.', 'success');
           authPassword.focus();
         } else {
           const account = accounts.find(item => String(item.name || '').trim().toLowerCase() === username && item.passwordHash === passwordHash);
           if (!account) { showAuthMessage('Incorrect username or password.', 'error'); return; }
-          localStorage.setItem(SESSION_KEY, JSON.stringify({ name: account.name, plan: username === 'knownsinnersdb' ? 'Studio' : 'Observer' }));
+          localStorage.setItem(SESSION_KEY, JSON.stringify({ name: account.name, plan: account.plan || 'Observer' }));
           authPassword.value = '';
           updateAuthUI();
           closeModal(signin);
-          toast.textContent = isKnownSinners() ? 'Logged in · dashboard access active.' : 'Logged in · no dashboard plan attached.';
+          toast.textContent = 'Logged in successfully.';
           toast.classList.add('show');
-          setTimeout(() => toast.classList.remove('show'), 2800);
+          setTimeout(() => toast.classList.remove('show'), 2200);
         }
       } catch {
         showAuthMessage('Account storage is unavailable in this browser.', 'error');
@@ -2618,7 +2760,6 @@
       setTimeout(() => toast.classList.remove('show'), 2200);
     }
 
-    navDashboardAction.addEventListener('click', requestDashboard);
     navLogoutAction.addEventListener('click', logoutAccount);
     checkoutAction.addEventListener('click', () => {
       if (checkoutAction.dataset.checkoutMethod === 'giftcard') showDiscordPrompt();
@@ -2626,6 +2767,60 @@
     document.querySelectorAll('.tool-tab').forEach(tab => tab.addEventListener('click', () => switchTool(tab.dataset.tool)));
     document.querySelectorAll('[data-theme-option]').forEach(card => card.addEventListener('click', () => applyTheme(card.dataset.themeOption)));
     document.querySelectorAll('[data-font-option]').forEach(card => card.addEventListener('click', () => applyFont(card.dataset.fontOption)));
+
+    document.getElementById('smartSearchForm').addEventListener('submit', e => {
+      e.preventDefault();
+      runSmartSearch(document.getElementById('smartSearchInput').value);
+    });
+    document.getElementById('caseCreateForm').addEventListener('submit', e => {
+      e.preventDefault();
+      const input = document.getElementById('caseNameInput');
+      const name = input.value.trim();
+      if (!name) return;
+      const cases = getCases();
+      cases.unshift({ id: Date.now(), name, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(), items: [] });
+      setCases(cases);
+      input.value = '';
+      renderCases();
+      renderOverviewHome();
+    });
+    document.getElementById('clearHistoryBtn').addEventListener('click', () => {
+      localStorage.removeItem(HISTORY_KEY);
+      renderHistory();
+      renderOverviewHome();
+    });
+    document.addEventListener('click', e => {
+      const openTool = e.target.closest('[data-open-tool]');
+      if (openTool) switchTool(openTool.dataset.openTool);
+      const historyTarget = e.target.closest('[data-history-id], [data-history-run]');
+      if (historyTarget) {
+        const id = Number(historyTarget.dataset.historyId || historyTarget.dataset.historyRun);
+        const item = getSearchHistory().find(entry => entry.id === id);
+        if (item) { switchTool(item.tool); toolInput.value = item.query; if (isKnownSinners()) executeLookup(item.query); }
+      }
+      const caseOpen = e.target.closest('[data-case-id]');
+      if (caseOpen) switchTool('Cases');
+      const addBtn = e.target.closest('[data-case-add]');
+      if (addBtn) {
+        const cases = getCases();
+        const target = cases.find(item => item.id === Number(addBtn.dataset.caseAdd));
+        const latest = getSearchHistory()[0];
+        if (target && latest) {
+          target.items = target.items || [];
+          if (!target.items.some(item => item.id === latest.id)) target.items.unshift(latest);
+          target.updatedAt = new Date().toISOString();
+          setCases(cases);
+          renderCases();
+          renderOverviewHome();
+        }
+      }
+      const deleteBtn = e.target.closest('[data-case-delete]');
+      if (deleteBtn) {
+        setCases(getCases().filter(item => item.id !== Number(deleteBtn.dataset.caseDelete)));
+        renderCases();
+        renderOverviewHome();
+      }
+    });
     
     document.addEventListener('keydown', e => {
       if (e.key !== 'Escape') return;
@@ -2639,6 +2834,7 @@
     initScrollReveals();
     switchTool('Overview');
     updateAuthUI();
+    renderOverviewHome();
   </script>
 </body>
 </html>
