@@ -1,0 +1,103 @@
+──────────────────────────────────────────────────────────────────
+Type:    discord_snowflake
+Query:   711207425457520651
+Username: n352
+Display: n352
+Avatar:  88a7925831fcb12b3274657af3b1cf42
+Joined:  2026-08-20
+Records: 8
+──────────────────────────────────────────────────────────────────
+
+#1
+┌─ fivem.net
+│  source: fivem.net
+│  id: 661ee57a3eb341
+│  discord_id: 711207425457520651
+│  ip: 2.13.146.212
+│  dbname: fivem.net
+│  license: b59977a41c5dc542801e4c350fbe7caac2c6cd17
+│  live: 844425609830456
+│  xbl: 2535422726595274
+└─
+
+#2
+┌─ unknown
+│  source: unknown
+│  id: a4d99028ef5c73
+│  username: max.chpr
+│  discord_id: 711207425457520651
+│  dbname: unknown
+│  created: 2024-03-12
+└─
+
+#3
+┌─ unknown
+│  source: unknown
+│  id: 50c6cca75e0936
+│  username: max.chpr
+│  discord_id: 711207425457520651
+│  dbname: unknown
+└─
+
+#4
+┌─ fivem.net
+│  source: fivem.net
+│  id: 300084bbd32588
+│  discord_id: 711207425457520651
+│  dbname: fivem.net
+│  license: b59977a41c5dc542801e4c350fbe7caac2c6cd17
+│  license2: b59977a41c5dc542801e4c350fbe7caac2c6cd17
+│  live: 844425609830456
+│  steam: 11000014b40ced2
+│  xbl: 2535422726595274
+│  created: 2026-05-07T16:29:01Z
+└─
+
+#5
+┌─ unknown
+│  source: unknown
+│  id: 2cc72279f5130e
+│  username: suck me 😩
+│  discord_id: 711207425457520651
+│  dbname: unknown
+└─
+
+#6
+┌─ unknown
+│  source: unknown
+│  id: 67e0474d4546c1bcc71a
+│  username: dj.maxchpr
+│  discord_id: 711207425457520651
+│  dbname: unknown
+│  import_id: 67e0474d4546c1bcc71a
+│  created: 2026-05-12T01:45:46Z
+└─
+
+#7
+┌─ unknown
+│  source: unknown
+│  id: e9b90340f03718a266f1
+│  username: Max.
+│  discord_id: 711207425457520651
+│  dbname: unknown
+│  import_id: e9b90340f03718a266f1
+│  created: 2026-05-12T01:44:35Z
+└─
+
+#8
+┌─ fivem.net
+│  source: fivem.net
+│  id: 1de93a208133b7
+│  username: maxchpr
+│  discord_id: 711207425457520651
+│  dbname: fivem.net
+│  fivem: 13553487
+│  license: b59977a41c5dc542801e4c350fbe7caac2c6cd17
+│  license2: b59977a41c5dc542801e4c350fbe7caac2c6cd17
+│  live: 844425609830456
+│  steam: 11000014b40ced2
+│  xbl: 2535422726595274
+│  created: 2026-05-07T16:28:07Z
+└─
+
+──────────────────────────────────────────────────────────────────
