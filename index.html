@@ -1,0 +1,1616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UNMASKED</title>
+<link rel="icon" type="image/png" href="assets/pic/icon.png?v=2">
+<link rel="shortcut icon" type="image/png" href="assets/pic/icon.png?v=2">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Press+Start+2P&family=Silkscreen&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: #000;
+}
+::-webkit-scrollbar-thumb {
+    background: #222;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #333;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    background: #000;
+    color: #fff;
+    font-family: 'Press Start 2P', 'Silkscreen', monospace;
+    overflow-x: hidden;
+    scrollbar-color: #222 #000;
+    scrollbar-width: thin;
+}
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 64px;
+    padding: 0 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid #1a1a1a;
+    z-index: 100;
+    font-family: 'Inter', system-ui, sans-serif;
+}
+
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+}
+
+.nav-brand {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.brand-icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    display: block;
+    filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.2));
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.nav-item {
+    font-size: 14px;
+    font-weight: 500;
+    color: #888;
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.nav-item:hover {
+    color: #fff;
+}
+
+.nav-item.active {
+    color: #fff;
+    font-weight: 600;
+}
+
+.nav-auth {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.auth-btn {
+    background: transparent;
+    border: 1px solid #333;
+    color: #fff;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-family: 'Inter', sans-serif;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.auth-btn:hover {
+    background: #fff;
+    color: #000;
+}
+
+.user-trigger-btn {
+    background: #0a0a0a;
+    border: 1px solid #222;
+    color: #fff;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    user-select: none;
+    transition: all 0.2s;
+}
+
+.user-trigger-btn:hover {
+    background: #151515;
+    border-color: #444;
+}
+
+.user-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    background: #050505;
+    border: 1px solid #222;
+    border-radius: 6px;
+    width: 240px;
+    flex-direction: column;
+    padding: 12px;
+    gap: 10px;
+    z-index: 150;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.9);
+    font-family: 'Inter', sans-serif;
+}
+
+.user-dropdown.show {
+    display: flex;
+}
+
+.user-info-box {
+    background: #000;
+    border: 1px solid #1a1a1a;
+    border-radius: 4px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: #777;
+}
+
+.info-row span.val {
+    color: #fff;
+    font-weight: 600;
+}
+
+.dropdown-logout-btn {
+    width: 100%;
+    padding: 8px;
+    background: #000;
+    border: 1px solid #333;
+    color: #aaa;
+    font-size: 11px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.dropdown-logout-btn:hover {
+    background: #fff;
+    color: #000;
+    border-color: #fff;
+}
+
+.stage {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 48px;
+    padding: 64px 30px 0;
+}
+
+.pic-wrap {
+    flex-shrink: 0;
+    height: 84vh;
+    max-height: 720px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 28px;
+    margin-left: -20px;
+}
+
+.pic-wrap img {
+    height: 100%;
+    width: calc(100% + 10px);
+    object-fit: contain;
+    image-rendering: pixelated;
+    display: block;
+    transform: scaleX(1.22);
+    transform-origin: center center;
+}
+
+.panel {
+    width: 620px;
+    max-width: 55vw;
+    min-width: 320px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-left: 15px;
+}
+
+.search-box {
+    display: flex;
+    width: 100%;
+    position: relative;
+}
+
+.module-select-wrap {
+    position: relative;
+    display: flex;
+}
+
+.module-btn {
+    height: 48px;
+    background: #000;
+    border: 3px solid #fff;
+    border-right: none;
+    color: #fff;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    padding: 0 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+}
+
+.module-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    background: #000;
+    border: 3px solid #fff;
+    min-width: 170px;
+    flex-direction: column;
+    z-index: 120;
+}
+
+.module-dropdown.show {
+    display: flex;
+}
+
+.module-opt {
+    padding: 10px 14px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    color: #888;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.module-opt:hover {
+    background: #fff;
+    color: #000;
+}
+
+.module-opt.active {
+    color: #fff;
+}
+
+.search-box input {
+    flex: 1;
+    height: 48px;
+    background: #000;
+    border: 3px solid #fff;
+    color: #fff;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    padding: 4px 14px 0;
+    outline: none;
+}
+
+.search-box input::placeholder {
+    color: #444;
+}
+
+button.enter-btn {
+    height: 48px;
+    background: #000;
+    border: 3px solid #fff;
+    border-left: none;
+    color: #fff;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 11px;
+    padding: 0 18px;
+    cursor: pointer;
+}
+
+button.enter-btn:hover {
+    background: #fff;
+    color: #000;
+}
+
+.loading-area {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 78px;
+    gap: 12px;
+}
+
+.spinner {
+    font-size: 24px;
+    color: #fff;
+    height: 28px;
+    line-height: 28px;
+    text-align: center;
+}
+
+.timer {
+    font-size: 11px;
+    color: #888;
+    text-align: center;
+}
+
+.results-area {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.results-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 10px;
+    color: #888;
+}
+
+.view-toggle {
+    display: flex;
+    gap: 10px;
+}
+
+.mode-btn {
+    color: #777;
+    background: transparent;
+    border: none;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    cursor: pointer;
+}
+
+.mode-btn.active {
+    color: #fff;
+    text-decoration: underline;
+}
+
+.reset-btn {
+    color: #fff;
+    background: transparent;
+    border: none;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.raw-json {
+    background: #050505;
+    border: 2px solid #fff;
+    padding: 14px;
+    color: #ffffff;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-break: break-all;
+    max-height: 480px;
+    overflow-y: auto;
+}
+
+#graphContainer {
+    display: none;
+    width: 100%;
+    height: 520px;
+    background: #050505;
+    border: 2px solid #fff;
+}
+
+.error-text {
+    color: #888;
+    font-size: 10px;
+    line-height: 1.6;
+}
+
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(8px);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal-box {
+    background: #050505;
+    border: 1px solid #222;
+    border-radius: 6px;
+    width: 100%;
+    max-width: 540px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9);
+}
+
+.modal-box.wide-modal-box {
+    max-width: 820px;
+    background: #000;
+    border: 1px solid #222;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #1a1a1a;
+    padding-bottom: 12px;
+}
+
+.modal-title {
+    font-size: 11px;
+    color: #fff;
+    letter-spacing: 0.5px;
+}
+
+.modal-close {
+    background: transparent;
+    border: none;
+    color: #666;
+    font-size: 12px;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.modal-close:hover {
+    color: #fff;
+}
+
+.modal-body {
+    font-size: 10px;
+    line-height: 1.8;
+    color: #aaa;
+    max-height: 80vh;
+    overflow-y: auto;
+    scrollbar-width: none;
+}
+
+.modal-body::-webkit-scrollbar {
+    display: none;
+}
+
+/* Pricing Grid */
+.pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    width: 100%;
+    font-family: 'Inter', system-ui, sans-serif;
+    padding: 10px 0;
+}
+
+.pricing-card {
+    position: relative;
+    background: #050505;
+    border: 1px solid #222;
+    border-radius: 8px;
+    padding: 30px 26px;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.2s ease;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    overflow: hidden;
+}
+
+.pricing-card:hover {
+    border-color: #444;
+}
+
+.pricing-card.featured {
+    border-color: #444;
+}
+
+.badge-tag {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 4px;
+}
+
+.badge-tag.owned {
+    background: #fff;
+    color: #000;
+    border: 1px solid #fff;
+}
+
+.badge-tag.popular {
+    background: #111;
+    color: #fff;
+    border: 1px solid #333;
+}
+
+.plan-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #666;
+    margin-bottom: 12px;
+}
+
+.price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    margin-bottom: 4px;
+}
+
+.price-val {
+    font-size: 38px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -0.5px;
+}
+
+.price-dec {
+    font-size: 20px;
+    font-weight: 500;
+    color: #888;
+}
+
+.price-period {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 22px;
+}
+
+.pricing-divider {
+    height: 1px;
+    background: #1a1a1a;
+    margin-bottom: 22px;
+    width: 100%;
+}
+
+.perks-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 30px;
+    flex-grow: 1;
+}
+
+.perk-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    font-weight: 400;
+    color: #ccc;
+}
+
+.perk-icon {
+    font-size: 12px;
+    color: #fff;
+    line-height: 1;
+}
+
+.perk-item.disabled {
+    color: #444;
+}
+
+.perk-item.disabled .perk-icon {
+    color: #444;
+}
+
+.card-action-btn {
+    width: 100%;
+    padding: 13px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: block;
+    letter-spacing: 0.3px;
+}
+
+.card-action-btn.active-buy {
+    background: #fff;
+    color: #000;
+    border: 1px solid #fff;
+}
+
+.card-action-btn.active-buy:hover {
+    background: #ccc;
+    border-color: #ccc;
+}
+
+.card-action-btn.pro-buy {
+    background: #fff;
+    color: #000;
+    border: 1px solid #fff;
+}
+
+.card-action-btn.pro-buy:hover {
+    background: #ccc;
+    border-color: #ccc;
+}
+
+.card-action-btn.current {
+    background: #000;
+    color: #fff;
+    border: 1px solid #333;
+    cursor: default;
+}
+
+.pricing-footer-note {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 11px;
+    color: #666;
+    text-align: center;
+    margin-top: 10px;
+}
+
+/* Features Grid */
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    font-family: 'Inter', system-ui, sans-serif;
+    padding: 6px 0;
+}
+
+.feature-box {
+    background: #050505;
+    border: 1px solid #1f1f1f;
+    border-radius: 6px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.feature-box h4 {
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.feature-box p {
+    color: #8c8c8c;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+/* FAQ List */
+.faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    font-family: 'Inter', system-ui, sans-serif;
+    padding: 6px 0;
+}
+
+.faq-item {
+    background: #050505;
+    border: 1px solid #1f1f1f;
+    border-radius: 6px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.faq-q {
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.faq-a {
+    color: #8c8c8c;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    width: 100%;
+}
+
+.auth-form input {
+    width: 100%;
+    height: 44px;
+    background: #000;
+    border: 2px solid #fff;
+    color: #fff;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    padding: 0 14px;
+    outline: none;
+}
+
+.auth-form input::placeholder {
+    color: #444;
+}
+
+.auth-submit-btn {
+    width: 100%;
+    height: 44px;
+    background: #fff;
+    color: #000;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    border: none;
+    cursor: pointer;
+    margin-top: 4px;
+}
+
+.auth-submit-btn:hover {
+    background: #ccc;
+}
+
+.auth-switch {
+    font-size: 9px;
+    color: #888;
+    cursor: pointer;
+    text-align: center;
+    margin-top: 6px;
+}
+
+.auth-switch:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
+@media(max-width: 860px) {
+    .navbar {
+        padding: 0 16px;
+    }
+    .stage {
+        height: auto;
+        min-height: 100vh;
+        flex-direction: column;
+        padding: 90px 20px 40px;
+    }
+    .pic-wrap {
+        height: 50vh;
+        margin: 0;
+    }
+    .panel {
+        width: 100%;
+        max-width: 100%;
+        margin-left: 0;
+    }
+    .pricing-grid, .features-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header class="navbar">
+    <div class="nav-left">
+        <div class="nav-brand" onclick="resetSearch()">
+            <img class="brand-icon" src="assets/pic/icon.png?v=2" alt="UNMASKED" onerror="this.style.display='none'">
+        </div>
+        <nav class="nav-links">
+            <span class="nav-item active" onclick="resetSearch()">Home</span>
+            <span class="nav-item" onclick="openModal('plans')">Plans</span>
+            <span class="nav-item" onclick="openModal('faq')">FAQ</span>
+            <span class="nav-item" onclick="openModal('features')">Features</span>
+        </nav>
+    </div>
+    <div class="nav-auth" id="authSection">
+        <button class="auth-btn" onclick="openAuthModal('login')">Log In</button>
+        <button class="auth-btn" onclick="openAuthModal('signup')">Sign Up</button>
+    </div>
+</header>
+
+<div class="stage">
+
+    <div class="pic-wrap">
+        <img id="girlPic" src="assets/pic/ag.png" alt="anime girl" onerror="this.style.display='none'">
+    </div>
+
+    <div class="panel">
+
+        <div class="search-box" id="searchBox">
+            <div class="module-select-wrap">
+                <button type="button" class="module-btn" id="moduleToggleBtn" onclick="toggleModuleMenu(event)">
+                    <span id="activeModuleLabel">email</span>
+                    <span style="font-size: 8px;">v</span>
+                </button>
+                <div class="module-dropdown" id="moduleDropdown">
+                    <div class="module-opt active" data-mod="email" onclick="selectModule('email')">email</div>
+                    <div class="module-opt" data-mod="username" onclick="selectModule('username')">user</div>
+                    <div class="module-opt" data-mod="name" onclick="selectModule('name')">name</div>
+                    <div class="module-opt" data-mod="phone" onclick="selectModule('phone')">phone</div>
+                    <div class="module-opt" data-mod="ip" onclick="selectModule('ip')">ip</div>
+                    <div class="module-opt" data-mod="discord_id" onclick="selectModule('discord_id')">dc id</div>
+                    <div class="module-opt" data-mod="telegram_user" onclick="selectModule('telegram_user')">tg user</div>
+                </div>
+            </div>
+
+            <input
+                id="target"
+                type="text"
+                autocomplete="off"
+                spellcheck="false"
+                placeholder="query here..."
+                onkeydown="if(event.key === 'Enter') runQuery()"
+            >
+            <button class="enter-btn" id="queryBtn" onclick="runQuery()">enter</button>
+        </div>
+
+        <div class="loading-area" id="loadingArea">
+            <div class="spinner" id="spinGlyph">/</div>
+            <div class="timer" id="timerText">0.0 sec</div>
+        </div>
+
+        <div class="results-area" id="resultsArea">
+            <div class="results-top">
+                <div class="view-toggle">
+                    <button class="mode-btn active" id="btnJson" onclick="switchView('json')">[json]</button>
+                    <button class="mode-btn" id="btnGraph" onclick="switchView('graph')">[graph]</button>
+                </div>
+                <div>
+                    <span id="timingResult" style="margin-right: 12px;">done</span>
+                    <button class="reset-btn" onclick="resetSearch()">[new query]</button>
+                </div>
+            </div>
+            <div id="resultsOutput"></div>
+            <div id="graphContainer"></div>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="modal-overlay" id="infoModal" onclick="closeModal(event)">
+    <div class="modal-box" id="infoModalBox" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            <span class="modal-title" id="modalTitle">MODAL</span>
+            <button class="modal-close" onclick="closeModalDirect()">[x]</button>
+        </div>
+        <div class="modal-body" id="modalBody"></div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="authModal" onclick="closeAuthModal(event)">
+    <div class="modal-box" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            <span class="modal-title" id="authTitle">LOG IN</span>
+            <button class="modal-close" onclick="closeAuthModalDirect()">[x]</button>
+        </div>
+        <div class="modal-body">
+            <div class="auth-form">
+                <input type="text" id="authUsername" placeholder="username" style="display:none;">
+                <input type="text" id="authIdentifier" placeholder="email address">
+                <input type="password" id="authPass" placeholder="password">
+                <button class="auth-submit-btn" id="authSubmitBtn" onclick="submitAuth()">SUBMIT</button>
+                <div class="auth-switch" id="authSwitchText" onclick="toggleAuthMode()">No account? Sign Up</div>
+                <div id="authErrorMsg" class="error-text" style="display:none;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+var SUPABASE_URL = "https://ounkirbexjdpptwrscyy.supabase.co";
+var SUPABASE_ANON = "sb_publishable_M8qMzL_rvqeTFlordq1j4w_x4Xu2X6-";
+var supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+var FUNCTION_URL = "https://ounkirbexjdpptwrscyy.supabase.co/functions/v1/kryptonite-lookup";
+
+var currentModule = "email";
+var currentData = null;
+var currentView = "json";
+var networkInstance = null;
+var currentUser = null;
+var userProfile = null;
+var authMode = "login";
+
+var spinFrames = ["/", "-", "\\", "|"];
+var spinIndex = 0;
+var spinTimer = null;
+var countTimer = null;
+
+function renderPricingCards() {
+    var userTier = userProfile?.tier ? userProfile.tier.toLowerCase() : "free";
+
+    var basicBadge = userTier === "basic" ? `<div class="badge-tag owned">OWNED</div>` : "";
+    var proBadge = userTier === "pro" ? `<div class="badge-tag owned">OWNED</div>` : `<div class="badge-tag popular">POPULAR</div>`;
+
+    var basicBtn = userTier === "basic" 
+        ? `<div class="card-action-btn current">✓ YOUR PLAN</div>` 
+        : `<a class="card-action-btn active-buy" href="https://nowpayments.io/payment?iid=4535402678" target="_blank">UPGRADE BASIC</a>`;
+
+    var proBtn = userTier === "pro" 
+        ? `<div class="card-action-btn current">✓ YOUR PLAN</div>` 
+        : `<a class="card-action-btn pro-buy" href="https://nowpayments.io/payment/?iid=5791551646" target="_blank">UPGRADE PRO</a>`;
+
+    return `
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                ${basicBadge}
+                <div class="plan-label">BASIC ACCESS</div>
+                <div class="price-row">
+                    <span class="price-val">$10</span>
+                    <span class="price-dec">.00</span>
+                </div>
+                <div class="price-period">per month</div>
+                <div class="pricing-divider"></div>
+                <ul class="perks-list">
+                    <li class="perk-item"><span class="perk-icon">✓</span> 100 Searches / Day</li>
+                    <li class="perk-item disabled"><span class="perk-icon">✕</span> Discord Stalker</li>
+                    <li class="perk-item"><span class="perk-icon">✓</span> Zero Logging</li>
+                    <li class="perk-item"><span class="perk-icon">✓</span> 32+ Integrated APIs</li>
+                </ul>
+                ${basicBtn}
+            </div>
+
+            <div class="pricing-card featured">
+                ${proBadge}
+                <div class="plan-label">PRO ACCESS</div>
+                <div class="price-row">
+                    <span class="price-val">$25</span>
+                    <span class="price-dec">.00</span>
+                </div>
+                <div class="price-period">per month</div>
+                <div class="pricing-divider"></div>
+                <ul class="perks-list">
+                    <li class="perk-item"><span class="perk-icon">✓</span> 250 Searches / Day</li>
+                    <li class="perk-item"><span class="perk-icon">✓</span> Discord Stalker</li>
+                    <li class="perk-item"><span class="perk-icon">✓</span> Zero Logging</li>
+                    <li class="perk-item"><span class="perk-icon">✓</span> 32+ Integrated APIs</li>
+                </ul>
+                ${proBtn}
+            </div>
+        </div>
+        <div class="pricing-footer-note">
+            * Pay with crypto via NOWPayments. Provide your account email during checkout for instant activation.
+        </div>
+    `;
+}
+
+function renderFeaturesList() {
+    return `
+        <div class="features-grid">
+            <div class="feature-box">
+                <h4>32+ Integrated Data Sources</h4>
+                <p>Simultaneously queries indexed breach databases, public and private leaks, and deep OSINT APIs with zero request delay.</p>
+            </div>
+            <div class="feature-box">
+                <h4>Discord Stalker & Dossiers</h4>
+                <p>Exclusive to Pro. Tracks server message logs, historical nicknames, user activities, and detailed Dossier profiles.</p>
+            </div>
+            <div class="feature-box">
+                <h4>Interactive Graph Network</h4>
+                <p>Visualize target connections dynamically with ForceAtlas physics. Map usernames, emails, carriers, and breaches in real time.</p>
+            </div>
+            <div class="feature-box">
+                <h4>Deep Footprinting Engine</h4>
+                <p>Scans presence across active social services, forums, developer portals, and messaging ecosystems.</p>
+            </div>
+            <div class="feature-box">
+                <h4>Telecom Carrier & Geolocation</h4>
+                <p>E.164 standardization, carrier detection, line classification (mobile/landline/VoIP), and IP ASN routing analytics.</p>
+            </div>
+            <div class="feature-box">
+                <h4>Strict Zero Logging</h4>
+                <p>Search targets and raw queries are processed entirely in memory and never stored in any database or disk log.</p>
+            </div>
+        </div>
+    `;
+}
+
+function renderFAQList() {
+    return `
+        <div class="faq-list">
+            <div class="faq-item">
+                <div class="faq-q">How does account activation work?</div>
+                <div class="faq-a">When paying through our NOWPayments checkout links, make sure to enter the exact email you registered with on UNMASKED. Once the transaction confirms on the blockchain, your tier upgrades automatically.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">When do daily search limits reset?</div>
+                <div class="faq-a">Your search counter resets automatically every 24 hours at 00:00 UTC. Check your remaining quota any time by clicking your username.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">What is the difference between Basic and Pro?</div>
+                <div class="faq-a">Basic ($10/mo) grants 100 queries/day across email, username, phone, IP, and name modules. Pro ($25/mo) increases the limit to 250 queries/day and unlocks Discord Stalker (dc id) dossier lookups.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">Do you store what I search?</div>
+                <div class="faq-a">No. We enforce a strict zero logging architecture. Only daily numerical query counts are tracked to maintain limits; query targets and responses are never retained.</div>
+            </div>
+        </div>
+    `;
+}
+
+async function checkSession() {
+    var sessionRes = await supabaseClient.auth.getSession();
+    if (sessionRes.data && sessionRes.data.session) {
+        currentUser = sessionRes.data.session.user;
+        await fetchProfile();
+    } else {
+        currentUser = null;
+        userProfile = null;
+    }
+    renderNavAuth();
+}
+checkSession();
+
+async function fetchProfile() {
+    if (!currentUser) return;
+    var res = await supabaseClient.from("profiles").select("*").eq("id", currentUser.id).single();
+    if (res.data) {
+        userProfile = res.data;
+    }
+}
+
+function toggleUserMenu(e) {
+    if (e) e.stopPropagation();
+    var menu = document.getElementById("userDropdown");
+    if (menu) menu.classList.toggle("show");
+}
+
+function renderNavAuth() {
+    var sec = document.getElementById("authSection");
+    if (currentUser) {
+        var uname = userProfile?.username || currentUser.email.split('@')[0];
+        var tierText = userProfile?.tier ? userProfile.tier.toUpperCase() : "FREE";
+        var dailyLimit = userProfile?.daily_limit || 0;
+        var todayStr = new Date().toISOString().split("T")[0];
+        var usage = (userProfile?.last_used_date === todayStr) ? (userProfile?.usage_today || 0) : 0;
+        var queriesLeft = Math.max(0, dailyLimit - usage);
+
+        sec.innerHTML = `
+            <button class="user-trigger-btn" onclick="toggleUserMenu(event)">
+                <span>${uname}</span>
+                <span style="font-size: 9px; color: #666;">▼</span>
+            </button>
+            <div class="user-dropdown" id="userDropdown">
+                <div class="user-info-box">
+                    <div class="info-row">
+                        <span>Plan</span>
+                        <span class="val">${tierText}</span>
+                    </div>
+                    <div class="info-row">
+                        <span>Daily Limit</span>
+                        <span class="val">${dailyLimit} / day</span>
+                    </div>
+                    <div class="info-row">
+                        <span>Queries Left</span>
+                        <span class="val">${queriesLeft}</span>
+                    </div>
+                </div>
+                <button class="dropdown-logout-btn" onclick="logout()">Log Out</button>
+            </div>
+        `;
+    } else {
+        sec.innerHTML = `
+            <button class="auth-btn" onclick="openAuthModal('login')">Log In</button>
+            <button class="auth-btn" onclick="openAuthModal('signup')">Sign Up</button>
+        `;
+    }
+}
+
+function openAuthModal(mode) {
+    authMode = mode;
+    var isLogin = mode === "login";
+    document.getElementById("authTitle").innerText = isLogin ? "LOG IN" : "SIGN UP";
+    document.getElementById("authSubmitBtn").innerText = isLogin ? "LOG IN" : "CREATE ACCOUNT";
+    document.getElementById("authSwitchText").innerText = isLogin ? "No account? Sign Up" : "Have an account? Log In";
+    document.getElementById("authUsername").style.display = isLogin ? "none" : "block";
+    document.getElementById("authIdentifier").placeholder = isLogin ? "email or username" : "email address";
+    document.getElementById("authErrorMsg").style.display = "none";
+    document.getElementById("authModal").style.display = "flex";
+}
+
+function toggleAuthMode() {
+    openAuthModal(authMode === "login" ? "signup" : "login");
+}
+
+function closeAuthModal(e) {
+    if (e.target.id === "authModal") closeAuthModalDirect();
+}
+
+function closeAuthModalDirect() {
+    document.getElementById("authModal").style.display = "none";
+}
+
+async function submitAuth() {
+    var identifier = document.getElementById("authIdentifier").value.trim();
+    var pass = document.getElementById("authPass").value.trim();
+    var username = document.getElementById("authUsername").value.trim();
+    var errEl = document.getElementById("authErrorMsg");
+    errEl.style.display = "none";
+
+    if (!identifier || !pass) {
+        errEl.innerText = "Please fill in all fields.";
+        errEl.style.display = "block";
+        return;
+    }
+
+    if (authMode === "signup") {
+        if (!username) {
+            errEl.innerText = "Username is required.";
+            errEl.style.display = "block";
+            return;
+        }
+
+        var checkUname = await supabaseClient.from("profiles").select("id").eq("username", username).maybeSingle();
+        if (checkUname.data) {
+            errEl.innerText = "Username already taken.";
+            errEl.style.display = "block";
+            return;
+        }
+
+        var res = await supabaseClient.auth.signUp({
+            email: identifier,
+            password: pass,
+            options: {
+                data: { username: username }
+            }
+        });
+
+        if (res.error) {
+            errEl.innerText = res.error.message;
+            errEl.style.display = "block";
+        } else {
+            closeAuthModalDirect();
+            checkSession();
+        }
+    } else {
+        var emailToUse = identifier;
+        if (!identifier.includes("@")) {
+            var lookupRes = await supabaseClient.from("profiles").select("email").eq("username", identifier).maybeSingle();
+            if (!lookupRes.data || !lookupRes.data.email) {
+                errEl.innerText = "User not found.";
+                errEl.style.display = "block";
+                return;
+            }
+            emailToUse = lookupRes.data.email;
+        }
+
+        var res = await supabaseClient.auth.signInWithPassword({
+            email: emailToUse,
+            password: pass
+        });
+
+        if (res.error) {
+            errEl.innerText = res.error.message;
+            errEl.style.display = "block";
+        } else {
+            closeAuthModalDirect();
+            checkSession();
+        }
+    }
+}
+
+async function logout() {
+    await supabaseClient.auth.signOut();
+    currentUser = null;
+    userProfile = null;
+    renderNavAuth();
+    resetSearch();
+}
+
+function toggleModuleMenu(e) {
+    e.stopPropagation();
+    document.getElementById("moduleDropdown").classList.toggle("show");
+}
+
+function selectModule(mod) {
+    setModuleDirect(mod);
+    document.getElementById("moduleDropdown").classList.remove("show");
+}
+
+window.addEventListener("click", function(e) {
+    var modDrop = document.getElementById("moduleDropdown");
+    if (modDrop && modDrop.classList.contains("show")) {
+        modDrop.classList.remove("show");
+    }
+
+    var userDrop = document.getElementById("userDropdown");
+    if (userDrop && userDrop.classList.contains("show")) {
+        if (!e.target.closest(".user-trigger-btn") && !e.target.closest(".user-dropdown")) {
+            userDrop.classList.remove("show");
+        }
+    }
+});
+
+function openModal(key) {
+    var modalBox = document.getElementById("infoModalBox");
+    var modalTitle = document.getElementById("modalTitle");
+    var modalBody = document.getElementById("modalBody");
+
+    if (key === "plans") {
+        modalBox.classList.add("wide-modal-box");
+        modalTitle.innerText = "SUBSCRIPTION TIERS";
+        modalBody.innerHTML = renderPricingCards();
+    } else if (key === "features") {
+        modalBox.classList.add("wide-modal-box");
+        modalTitle.innerText = "ALL PLATFORM FEATURES";
+        modalBody.innerHTML = renderFeaturesList();
+    } else if (key === "faq") {
+        modalBox.classList.add("wide-modal-box");
+        modalTitle.innerText = "FREQUENTLY ASKED QUESTIONS";
+        modalBody.innerHTML = renderFAQList();
+    }
+
+    document.getElementById("infoModal").style.display = "flex";
+}
+
+function closeModal(e) {
+    if (e.target.id === "infoModal") closeModalDirect();
+}
+
+function closeModalDirect() {
+    document.getElementById("infoModal").style.display = "none";
+}
+
+function setModuleDirect(mod) {
+    currentModule = mod;
+    var labels = {
+        email: "email",
+        username: "user",
+        name: "name",
+        phone: "phone",
+        ip: "ip",
+        discord_id: "dc id",
+        telegram_user: "tg user"
+    };
+    document.getElementById("activeModuleLabel").innerText = labels[mod] || mod;
+    var barOpts = document.querySelectorAll("#moduleDropdown .module-opt");
+    for (var i = 0; i < barOpts.length; i++) {
+        barOpts[i].className = barOpts[i].getAttribute("data-mod") === mod ? "module-opt active" : "module-opt";
+    }
+}
+
+function stopSpinners() {
+    if (spinTimer) clearInterval(spinTimer);
+    if (countTimer) clearInterval(countTimer);
+    spinTimer = null;
+    countTimer = null;
+}
+
+function escapeHTML(str) {
+    return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+function switchView(mode) {
+    currentView = mode;
+    var jsonOut = document.getElementById("resultsOutput");
+    var graphOut = document.getElementById("graphContainer");
+    var bJson = document.getElementById("btnJson");
+    var bGraph = document.getElementById("btnGraph");
+
+    if (mode === "json") {
+        bJson.className = "mode-btn active";
+        bGraph.className = "mode-btn";
+        jsonOut.style.display = "block";
+        graphOut.style.display = "none";
+    } else {
+        bJson.className = "mode-btn";
+        bGraph.className = "mode-btn active";
+        jsonOut.style.display = "none";
+        graphOut.style.display = "block";
+        buildGraphView(currentData);
+    }
+}
+
+function resetSearch() {
+    stopSpinners();
+    document.getElementById("loadingArea").style.display = "none";
+    document.getElementById("resultsArea").style.display = "none";
+    document.getElementById("searchBox").style.display = "flex";
+    var pic = document.getElementById("girlPic");
+    pic.style.display = "block";
+    pic.src = "assets/pic/ag.png";
+    var inp = document.getElementById("target");
+    inp.value = "";
+    inp.focus();
+    if (networkInstance) {
+        networkInstance.destroy();
+        networkInstance = null;
+    }
+}
+
+async function runQuery() {
+    if (!currentUser) {
+        openAuthModal("login");
+        return;
+    }
+
+    var input = document.getElementById("target");
+    var val = input.value.replace(/^\s+|\s+$/g, "");
+    if (!val) return;
+
+    document.getElementById("searchBox").style.display = "none";
+    document.getElementById("resultsArea").style.display = "none";
+    var loading = document.getElementById("loadingArea");
+    loading.style.display = "flex";
+
+    spinIndex = 0;
+    document.getElementById("spinGlyph").textContent = spinFrames[0];
+    document.getElementById("timerText").textContent = "0.0 sec";
+    stopSpinners();
+
+    spinTimer = setInterval(function() {
+        spinIndex = (spinIndex + 1) % spinFrames.length;
+        document.getElementById("spinGlyph").textContent = spinFrames[spinIndex];
+    }, 100);
+
+    var start = new Date().getTime();
+    countTimer = setInterval(function() {
+        var elapsed = ((new Date().getTime() - start) / 1000).toFixed(1);
+        document.getElementById("timerText").textContent = elapsed + " sec";
+    }, 100);
+
+    var sessionRes = await supabaseClient.auth.getSession();
+    var token = sessionRes.data?.session?.access_token || "";
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", FUNCTION_URL, true);
+    xhr.setRequestHeader("Authorization", "Bearer " + token);
+    xhr.setRequestHeader("apikey", SUPABASE_ANON);
+    xhr.setRequestHeader("Content-Type", "application/json");
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState !== 4) return;
+
+        stopSpinners();
+        loading.style.display = "none";
+
+        var total = ((new Date().getTime() - start) / 1000).toFixed(1);
+        var resultsArea = document.getElementById("resultsArea");
+        var output = document.getElementById("resultsOutput");
+        var timeLabel = document.getElementById("timingResult");
+        var pic = document.getElementById("girlPic");
+
+        resultsArea.style.display = "flex";
+        timeLabel.textContent = "finished in " + total + "s";
+
+        if (xhr.status >= 200 && xhr.status < 300) {
+            pic.style.display = "block";
+            pic.src = "assets/pic/ag%20(2).png";
+
+            var data;
+            try {
+                data = JSON.parse(xhr.responseText);
+            } catch (err) {
+                data = { error: "failed to parse response" };
+            }
+
+            currentData = data;
+            output.innerHTML = '<pre class="raw-json">' + escapeHTML(JSON.stringify(data, null, 2)) + '</pre>';
+            switchView(currentView);
+            fetchProfile().then(renderNavAuth);
+        } else {
+            var msg = "server error " + xhr.status;
+            try {
+                var errObj = JSON.parse(xhr.responseText);
+                if (errObj.error) msg = errObj.error;
+            } catch (e) {}
+
+            output.innerHTML = '<div class="error-text">' + escapeHTML(msg) + '</div>';
+            document.getElementById("graphContainer").style.display = "none";
+        }
+    };
+
+    xhr.send(JSON.stringify({
+        module: currentModule,
+        target: val
+    }));
+}
+
+function buildGraphView(data) {
+    var container = document.getElementById("graphContainer");
+    if (!data || typeof data !== "object") return;
+
+    var nodes = [];
+    var edges = [];
+    var nodeId = 1;
+    var nodeMap = {};
+
+    function addNode(label, group, shape, tooltip) {
+        var strLabel = String(label);
+        var key = group + "::" + strLabel;
+        if (nodeMap[key]) return nodeMap[key];
+
+        var id = nodeId++;
+        nodeMap[key] = id;
+        nodes.push({
+            id: id,
+            label: strLabel.length > 32 ? strLabel.slice(0, 29) + "..." : strLabel,
+            title: tooltip || strLabel,
+            shape: shape || "box",
+            group: group
+        });
+        return id;
+    }
+
+    function addEdge(from, to) {
+        if (!from || !to) return;
+        edges.push({
+            from: from,
+            to: to,
+            color: { color: "#333", highlight: "#fff" },
+            arrows: { to: { enabled: true, scaleFactor: 0.5 } }
+        });
+    }
+
+    var targetVal = document.getElementById("target").value.trim();
+    var rootId = addNode(targetVal || "TARGET", "root", "box");
+
+    var skipKeys = { took_ms: true, status: true, meta: true, pages: true, per_page: true, valid: true };
+
+    function parseFootprint(fpData, parentId) {
+        var catId = addNode("FOOTPRINT", "category");
+        addEdge(parentId, catId);
+        var hits = [];
+        function extractHits(sub) {
+            if (!sub || typeof sub !== "object") return;
+            if (Array.isArray(sub)) { sub.forEach(extractHits); return; }
+            for (var k in sub) {
+                var v = sub[k];
+                if (v === true || v === "found" || (typeof v === "object" && v && v.found)) {
+                    hits.push(k);
+                } else if (typeof v === "object") {
+                    extractHits(v);
+                }
+            }
+        }
+        extractHits(fpData);
+
+        if (hits.length > 0) {
+            Array.from(new Set(hits)).slice(0, 20).forEach(function(hit) {
+                var pId = addNode(hit, "footprint_hit");
+                addEdge(catId, pId);
+            });
+        }
+    }
+
+    function parseEntity(obj, parentId, fallbackLabel) {
+        if (!obj || typeof obj !== "object") return;
+        var mainTitle = obj.username || obj.display_name || obj.email || obj.phone || fallbackLabel || "RECORD";
+        var recordId = addNode(mainTitle, "record");
+        addEdge(parentId, recordId);
+
+        for (var k in obj) {
+            if (skipKeys[k]) continue;
+            var val = obj[k];
+            if (val === null || val === undefined || val === "" || typeof val === "object") continue;
+            var dId = addNode(k + ": " + val, "leaf", "box", k + ": " + val);
+            addEdge(recordId, dId);
+        }
+    }
+
+    for (var topKey in data) {
+        if (skipKeys[topKey]) continue;
+        var section = data[topKey];
+        if (!section) continue;
+
+        if (topKey === "footprint") {
+            parseFootprint(section, rootId);
+        } else if (Array.isArray(section)) {
+            var listHub = addNode(topKey.toUpperCase(), "category");
+            addEdge(rootId, listHub);
+            section.slice(0, 10).forEach(function(item, idx) {
+                parseEntity(item, listHub, topKey + " #" + (idx + 1));
+            });
+        } else if (typeof section === "object") {
+            if (section.results && Array.isArray(section.results)) {
+                var secHub = addNode(topKey.toUpperCase(), "category");
+                addEdge(rootId, secHub);
+                section.results.slice(0, 10).forEach(function(item, idx) {
+                    parseEntity(item, secHub, "RESULT #" + (idx + 1));
+                });
+            } else {
+                parseEntity(section, rootId, topKey.toUpperCase());
+            }
+        }
+    }
+
+    var graphData = {
+        nodes: new vis.DataSet(nodes),
+        edges: new vis.DataSet(edges)
+    };
+
+    var options = {
+        nodes: {
+            borderWidth: 1,
+            shape: "box",
+            margin: 8,
+            font: { color: "#ffffff", size: 8, face: "Press Start 2P" }
+        },
+        groups: {
+            root: { color: { background: "#ffffff", border: "#ffffff" }, font: { color: "#000000", size: 10 } },
+            category: { color: { background: "#111111", border: "#ffffff" }, font: { color: "#ffffff", size: 8 } },
+            record: { color: { background: "#0a0a0a", border: "#666666" }, font: { color: "#cccccc" } },
+            footprint_hit: { color: { background: "#1a1a1a", border: "#ffffff" }, font: { color: "#ffffff" } },
+            leaf: { color: { background: "#000000", border: "#333333" }, font: { color: "#888888", size: 7 } }
+        },
+        physics: {
+            enabled: true,
+            solver: "forceAtlas2Based",
+            forceAtlas2Based: {
+                gravitationalConstant: -120,
+                centralGravity: 0.015,
+                springLength: 90,
+                springConstant: 0.08,
+                damping: 0.4,
+                avoidOverlap: 0.85
+            }
+        }
+    };
+
+    if (networkInstance) networkInstance.destroy();
+    networkInstance = new vis.Network(container, graphData, options);
+}
+</script>
+
+</body>
+</html>
