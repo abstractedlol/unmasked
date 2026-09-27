@@ -1022,7 +1022,7 @@ button.enter-btn:hover {
                 <input type="text" id="authUsername" placeholder="username" style="display:none;">
                 <input type="text" id="authIdentifier" placeholder="email address">
                 <input type="password" id="authPass" placeholder="password">
-                <input type="text" id="authOtp" placeholder="6-digit code" maxlength="6" style="display:none;">
+                <input type="text" id="authOtp" placeholder="verification code" maxlength="12" style="display:none;">
                 <button class="auth-submit-btn" id="authSubmitBtn" onclick="submitAuth()">SUBMIT</button>
                 <div class="auth-switch" id="authSwitchText" onclick="toggleAuthMode()">No account? Sign Up</div>
                 <div id="authErrorMsg" class="error-text" style="display:none;"></div>
@@ -1640,11 +1640,12 @@ async function submitAuth() {
     errEl.style.display = "none";
 
     if (authMode === "otp") {
-        if (!otpToken) {
-            errEl.innerText = "Please enter the 6-digit code.";
-            errEl.style.display = "block";
-            return;
-        }
+// change this check:
+if (!otpToken) {
+    errEl.innerText = "Please enter the verification code we just sent to your email.";
+    errEl.style.display = "block";
+    return;
+}
 
         var verifyRes = await supabaseClient.auth.verifyOtp({
             email: pendingSignupEmail,
